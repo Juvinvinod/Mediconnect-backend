@@ -1,3 +1,4 @@
+// user interface created for typescript to understand incoming data
 export interface IUser {
   id?: string;
   first_name: string;

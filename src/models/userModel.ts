@@ -1,6 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IUser } from '../common/types/user';
 
+// interface for user-model
 export interface UserDoc extends Document {
   first_name: string;
   last_name: string;
@@ -12,10 +13,12 @@ export interface UserDoc extends Document {
   is_verified?: boolean;
 }
 
+// let typescript know there is a statics method in userSchema
 interface UserModel extends Model<UserDoc> {
   build(attrs: IUser): UserDoc;
 }
 
+// user model
 const userSchema = new Schema({
   first_name: {
     type: String,
@@ -51,6 +54,7 @@ const userSchema = new Schema({
   },
 });
 
+// method to create new user
 userSchema.statics.build = (attrs: IUser) => {
   return new User(attrs);
 };
