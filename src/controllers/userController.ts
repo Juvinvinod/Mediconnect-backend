@@ -1,23 +1,31 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { matchedData } from 'express-validator/src/matched-data';
 
-import { UserRepository } from '../routes/userRoutes';
-import { UserDoc } from '../models/userModel';
+import { UserRepository } from '../repositories/userRepository';
+import { IUser } from '../common/types/user';
+import { UserService } from '../services/userService';
 
-const userRepository = new UserRepository();
+const userRepository = new UserRepository(); // create an instance of userRepository
+const userService = new UserService(userRepository); // create an instance of userService and pass in the userRepository
 
 export class UserController {
-  async signup(req: Request, res: Response): Promise<void> {
+  //check if a user already exists else create new user
+  signup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-      const { first_name, last_name, email, password, mobile } = req.body;
-      const userDetails: UserDoc = {
-        first_name,
-        last_name,
-        email,
-        password,
-        mobile,
-      };
+      const userDetails = matchedData(req) as IUser;
+      await userService.signup(userDetails);
+      res.status(200).json({ message: 'User created' });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        console.log(error.message);
+        return next(error);
+      } else {
+        console.log('An error occurred');
+      }
     }
-  }
+  };
 }
