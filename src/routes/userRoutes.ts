@@ -7,5 +7,6 @@ const userController = new UserController();
 const router = Router();
 
 router.post('/signUp', signupValidator, validateRequest, userController.signup); //create a new user
+router.post('/login', userController.login); //validate credentials and provide token
 
 export default router;

@@ -8,6 +8,7 @@ export interface UserDoc extends Document {
   password: string;
   mobile: number;
   email: string;
+  role: string;
   is_blocked?: boolean;
   is_admin?: boolean;
   is_verified?: boolean;
@@ -48,9 +49,9 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  is_admin: {
-    type: Boolean,
-    default: false,
+  role: {
+    type: String,
+    default: 'user',
   },
 });
 
