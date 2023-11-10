@@ -48,13 +48,4 @@ export class UserService {
       return documents;
     }
   }
-
-  async getDoctors(): Promise<IUser[]> {
-    const documents = await this.userRepository.getDoctors();
-    if (!documents) {
-      throw new NotFoundError('No doctors found');
-    } else {
-      return documents;
-    }
-  }
 }
