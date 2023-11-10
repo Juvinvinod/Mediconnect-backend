@@ -3,11 +3,12 @@ import { IUser } from '../common/types/user';
 import { UserRepository } from '../repositories/userRepository';
 import { NotFoundError } from '../common/errors/notFoundError';
 
+// functions to interact with database,handle errors if any
 export class UserService {
   private userRepository: UserRepository;
 
-  constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository;
+  constructor() {
+    this.userRepository = new UserRepository();
   }
 
   async signup(userDetails: IUser): Promise<IUser> {
@@ -27,6 +28,33 @@ export class UserService {
       throw new NotFoundError('Email not found');
     } else {
       return user;
+    }
+  }
+
+  async getUsers(): Promise<IUser[]> {
+    const documents = await this.userRepository.getUsers();
+    if (!documents) {
+      throw new NotFoundError('No users found');
+    } else {
+      return documents;
+    }
+  }
+
+  async getStaffs(): Promise<IUser[]> {
+    const documents = await this.userRepository.getStaffs();
+    if (!documents) {
+      throw new NotFoundError('No staffs found');
+    } else {
+      return documents;
+    }
+  }
+
+  async getDoctors(): Promise<IUser[]> {
+    const documents = await this.userRepository.getDoctors();
+    if (!documents) {
+      throw new NotFoundError('No doctors found');
+    } else {
+      return documents;
     }
   }
 }

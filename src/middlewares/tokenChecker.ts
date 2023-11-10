@@ -4,7 +4,11 @@ import jwt from 'jsonwebtoken';
 import { BadRequestError } from '../common/errors/badRequestError';
 import { ForbiddenError } from '../common/errors/forbiddenError';
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const bearerHeader = req.headers.authorization;
   if (!bearerHeader) {
     throw new BadRequestError('No token found');
