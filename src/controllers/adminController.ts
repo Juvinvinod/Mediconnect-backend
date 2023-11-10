@@ -82,24 +82,6 @@ export class AdminController {
     }
   };
 
-  // retrieve all doctors from database
-  getDoctors = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const documents = await userService.getDoctors();
-      if (documents) {
-        res.status(200).send(documents);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        return next(error);
-      }
-    }
-  };
-
   //update user
   updateUser = async (
     req: Request,

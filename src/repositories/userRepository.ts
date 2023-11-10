@@ -23,11 +23,6 @@ export class UserRepository {
     return await User.find({ role: 'staff' });
   }
 
-  //function to get all doctor documents
-  async getDoctors(): Promise<IUser[] | null> {
-    return await User.find({ role: 'doctor' });
-  }
-
   // function to get a single users
   async getUser(id: string): Promise<IUser | null> {
     return await User.findOne({ _id: id });

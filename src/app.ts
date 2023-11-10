@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import userRouter from './routes/userRoutes';
 import adminRouter from './routes/adminRoutes';
+import doctorRouter from './routes/doctorRoutes';
 import { errorHandler } from './middlewares/globalErrorHandler';
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cors(options));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
+app.use('/doctor', doctorRouter);
 app.use(userRouter);
 app.use(errorHandler);
 
