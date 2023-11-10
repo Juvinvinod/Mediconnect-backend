@@ -12,4 +12,24 @@ export class UserRepository {
   async findUserByEmail(email: string): Promise<IUser | null> {
     return await User.findOne({ email });
   }
+
+  //function to get all user documents
+  async getUsers(): Promise<IUser[] | null> {
+    return await User.find({ role: 'user' });
+  }
+
+  //function to get all staff documents
+  async getStaffs(): Promise<IUser[] | null> {
+    return await User.find({ role: 'staff' });
+  }
+
+  //function to get all doctor documents
+  async getDoctors(): Promise<IUser[] | null> {
+    return await User.find({ role: 'doctor' });
+  }
+
+  // function to get a single users
+  async getUser(id: string): Promise<IUser | null> {
+    return await User.findOne({ _id: id });
+  }
 }

@@ -3,13 +3,11 @@ import { matchedData } from 'express-validator/src/matched-data';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import { UserRepository } from '../repositories/userRepository';
 import { IUser } from '../common/types/user';
 import { UserService } from '../services/userService';
 import { BadRequestError } from '../common/errors/badRequestError';
 
-const userRepository = new UserRepository(); // create an instance of userRepository
-const userService = new UserService(userRepository); // create an instance of userService and pass in the userRepository
+const userService = new UserService(); // create an instance of userService
 
 export class UserController {
   //check if a user already exists else create new user
@@ -53,8 +51,9 @@ export class UserController {
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
           const payload = { subject: user._id };
+          const role = user.role;
           const token = jwt.sign(payload, process.env.JWT_SECRET);
-          res.status(200).send({ token });
+          res.status(200).send({ token, role });
         } else {
           throw new BadRequestError('Incorrect username/password');
         }
