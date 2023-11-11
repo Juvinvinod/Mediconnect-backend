@@ -41,4 +41,19 @@ export class DoctorService {
       return documents;
     }
   }
+
+  // update doctor details with given data
+  async UpdateDoctor(id: string, doctor: IDoctor): Promise<IDoctor | null> {
+    return await this.doctorRepository.updateDoctor(id, doctor);
+  }
+
+  //block a doctor
+  async blockDoctor(id: string): Promise<IDoctor | null> {
+    return await this.doctorRepository.blockDoctor(id);
+  }
+
+  //unblock a doctor
+  async unblockUser(id: string): Promise<IDoctor | null> {
+    return await this.doctorRepository.unblockDoctor(id);
+  }
 }
