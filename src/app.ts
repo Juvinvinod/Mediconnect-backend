@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRouter from './routes/userRoutes';
 import adminRouter from './routes/adminRoutes';
 import doctorRouter from './routes/doctorRoutes';
+import staffRouter from './routes/staffRoutes';
 import { errorHandler } from './middlewares/globalErrorHandler';
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
 app.use('/doctor', doctorRouter);
+app.use('/staff', staffRouter);
 app.use(userRouter);
 app.use(errorHandler);
 

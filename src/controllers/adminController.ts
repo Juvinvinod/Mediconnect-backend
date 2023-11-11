@@ -126,7 +126,7 @@ export class AdminController {
         throw new BadRequestError('Invalid request');
       }
       await adminService.blockUser(id);
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: 'Doctor Blocked' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);
@@ -141,7 +141,7 @@ export class AdminController {
         throw new BadRequestError('Invalid request');
       }
       await adminService.unblockUser(id);
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: 'Doctor unblocked' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);

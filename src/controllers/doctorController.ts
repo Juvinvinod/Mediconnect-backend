@@ -83,4 +83,54 @@ export class DoctorController {
       }
     }
   };
+
+  //update user
+  updateDoctor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const id = req.params.id;
+
+      const doctor = req.body as IDoctor;
+
+      await doctorService.UpdateDoctor(id, doctor);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  blockDoctor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.body as { id: string };
+      if (!id) {
+        throw new BadRequestError('Invalid request');
+      }
+      await doctorService.blockDoctor(id);
+      res.status(200).json({ success: 'Doctor blocked' });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  unblockDoctor = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.body as { id: string };
+      if (!id) {
+        throw new BadRequestError('Invalid request');
+      }
+      await doctorService.unblockUser(id);
+      res.status(200).json({ success: 'Doctor unblocked' });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
 }
