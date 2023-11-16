@@ -104,6 +104,7 @@ export class DoctorController {
     }
   };
 
+  //block doctor
   blockDoctor = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body as { id: string };
@@ -119,17 +120,66 @@ export class DoctorController {
     }
   };
 
+  //unblock doctor
   unblockDoctor = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
         throw new BadRequestError('Invalid request');
       }
-      await doctorService.unblockUser(id);
+      await doctorService.unblockDoctor(id);
       res.status(200).json({ success: 'Doctor unblocked' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);
+      }
+    }
+  };
+
+  //get doctor profile
+  getProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      if (id) {
+        const documents = await doctorService.getDoctor(id);
+        if (documents) {
+          res.status(200).send(...documents);
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+    }
+  };
+
+  //update doctor password
+  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      const oldPass = (req.body as { password?: string }).password;
+      const newPass = (req.body as { confirm_password?: string })
+        .confirm_password;
+      if (id) {
+        const document = await doctorService.getDoctor(id);
+        if (document && oldPass) {
+          const passCheck = await bcrypt.compare(oldPass, document[0].password);
+          if (passCheck && newPass) {
+            const hashedPass = await bcrypt.hash(newPass, 10);
+            await doctorService.updatePassword(id, hashedPass);
+            res.status(200).json({ success: 'Password updated' });
+          } else {
+            throw new BadRequestError('Incorrect Password');
+          }
+        } else {
+          throw new BadRequestError('Document not found');
+        }
+      } else {
+        throw new BadRequestError('Invalid id');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
       }
     }
   };

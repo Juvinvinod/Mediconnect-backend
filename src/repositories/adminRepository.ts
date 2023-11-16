@@ -3,10 +3,6 @@ import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 
 export class AdminRepository {
-  async updateUser(id: string, userDetails: IUser): Promise<IUser | null> {
-    return await User.findByIdAndUpdate({ _id: id }, userDetails);
-  }
-
   //function to block a user
   async blockUser(id: string): Promise<IUser> {
     const user = await User.findOne({ _id: id });

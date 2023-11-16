@@ -1,5 +1,6 @@
 import { User } from '../models/userModel';
 import { IUser } from '../common/types/user';
+import { NotFoundError } from '../common/errors/notFoundError';
 
 export class UserRepository {
   // create a new user and save it in database
@@ -13,18 +14,33 @@ export class UserRepository {
     return await User.findOne({ email });
   }
 
-  //function to get all user documents
+  //function to get all user documents from database
   async getUsers(): Promise<IUser[] | null> {
     return await User.find({ role: 'user' });
   }
 
-  //function to get all staff documents
+  //function to get all staff documents from database
   async getStaffs(): Promise<IUser[] | null> {
     return await User.find({ role: 'staff' });
   }
 
-  // function to get a single users
-  async getUser(id: string): Promise<IUser | null> {
-    return await User.findOne({ _id: id });
+  // function to get a single user from database
+  async getUser(id: string): Promise<IUser[] | null> {
+    return await User.find({ _id: id });
+  }
+
+  // function to update user in database
+  async updateUser(id: string, userDetails: IUser): Promise<IUser | null> {
+    return await User.findByIdAndUpdate({ _id: id }, userDetails);
+  }
+
+  //function to update password of user in database
+  async passwordChange(id: string, newPass: string): Promise<IUser> {
+    const user = await User.findOne({ _id: id });
+    if (user) {
+      user.set({ password: newPass });
+      return await user.save();
+    }
+    throw new NotFoundError('user not found');
   }
 }

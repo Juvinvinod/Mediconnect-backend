@@ -119,6 +119,7 @@ export class AdminController {
     }
   };
 
+  // function to block user
   blockUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body as { id: string };
@@ -134,6 +135,7 @@ export class AdminController {
     }
   };
 
+  // function to unblock user
   unblockUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body as { id: string };

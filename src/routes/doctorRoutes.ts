@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { DoctorController } from '../controllers/doctorController';
 import { validateRequest } from '../middlewares/validateRequest';
 import { doctorSignupValidator } from '../middlewares/doctorSignupValidator';
+import { verifyToken } from '../middlewares/tokenChecker';
 
 const doctorController = new DoctorController();
 const router = Router();
@@ -13,9 +14,11 @@ router.post(
   doctorController.signup
 ); //create a new user
 router.post('/login', doctorController.login); //validate credentials and provide token
-router.get('/doctors', doctorController.getDoctors); // send all the user documents from database
-router.put('/editDoctor/:id', doctorController.updateDoctor); // update user in the database
-router.patch('/blockDoctor', doctorController.blockDoctor); //block a doctor
-router.patch('/unblockDoctor', doctorController.unblockDoctor); //unblock doctor
+router.get('/doctors', verifyToken, doctorController.getDoctors); // send all the user documents from database
+router.put('/editDoctor/:id', verifyToken, doctorController.updateDoctor); // update user in the database
+router.patch('/blockDoctor', verifyToken, doctorController.blockDoctor); //block a doctor
+router.patch('/unblockDoctor', verifyToken, doctorController.unblockDoctor); //unblock doctor
+router.get('/profile', verifyToken, doctorController.getProfile); // get doctor profile
+router.put('/password', verifyToken, doctorController.updatePassword); // update user in the database
 
 export default router;

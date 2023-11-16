@@ -31,6 +31,15 @@ export class StaffService {
     }
   }
 
+  async getStaff(id: string): Promise<IStaff[]> {
+    const document = await this.staffRepository.getStaff(id);
+    if (!document) {
+      throw new NotFoundError('No staffs found');
+    } else {
+      return document;
+    }
+  }
+
   async getStaffs(): Promise<IStaff[]> {
     const documents = await this.staffRepository.getStaffs();
     if (!documents) {
@@ -38,5 +47,25 @@ export class StaffService {
     } else {
       return documents;
     }
+  }
+
+  // update staff details with given data
+  async UpdateStaff(id: string, staff: IStaff): Promise<IStaff | null> {
+    return await this.staffRepository.updateStaff(id, staff);
+  }
+
+  //block a staff
+  async blockStaff(id: string): Promise<IStaff | null> {
+    return await this.staffRepository.blockStaff(id);
+  }
+
+  //unblock a doctor
+  async unblockStaff(id: string): Promise<IStaff | null> {
+    return await this.staffRepository.unblockStaff(id);
+  }
+
+  //update password
+  async updatePassword(id: string, newPass: string): Promise<IStaff | null> {
+    return await this.staffRepository.passwordChange(id, newPass);
   }
 }

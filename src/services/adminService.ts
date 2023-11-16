@@ -14,11 +14,11 @@ export class AdminService {
 
   // update user details with given data
   async UpdateUser(id: string, user: IUser): Promise<IUser | null> {
-    return await this.adminRepository.updateUser(id, user);
+    return await this.userRepository.updateUser(id, user);
   }
 
   //get a single user
-  async getUser(id: string): Promise<IUser | null> {
+  async getUser(id: string): Promise<IUser[] | null> {
     return await this.userRepository.getUser(id);
   }
 
