@@ -9,6 +9,11 @@ export class DoctorRepository {
     return await doctor.save();
   }
 
+  //function to get  doctor documents
+  async getDoctor(id: string): Promise<IDoctor[] | null> {
+    return await Doctor.find({ _id: id });
+  }
+
   //function to get all doctor documents
   async getDoctors(): Promise<IDoctor[] | null> {
     return await Doctor.find({ role: 'doctor' });
@@ -53,5 +58,15 @@ export class DoctorRepository {
       return await doctor.save();
     }
     throw new NotFoundError('User not found');
+  }
+
+  //function to update password doctor
+  async passwordChange(id: string, newPass: string): Promise<IDoctor> {
+    const doctor = await Doctor.findOne({ _id: id });
+    if (doctor) {
+      doctor.set({ password: newPass });
+      return await doctor.save();
+    }
+    throw new NotFoundError('Doctor not found');
   }
 }

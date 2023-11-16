@@ -31,6 +31,15 @@ export class UserService {
     }
   }
 
+  async getUser(id: string): Promise<IUser[]> {
+    const document = await this.userRepository.getUser(id);
+    if (!document) {
+      throw new NotFoundError('No users found');
+    } else {
+      return document;
+    }
+  }
+
   async getUsers(): Promise<IUser[]> {
     const documents = await this.userRepository.getUsers();
     if (!documents) {
@@ -47,5 +56,10 @@ export class UserService {
     } else {
       return documents;
     }
+  }
+
+  //update password
+  async updatePassword(id: string, newPass: string): Promise<IUser | null> {
+    return await this.userRepository.passwordChange(id, newPass);
   }
 }

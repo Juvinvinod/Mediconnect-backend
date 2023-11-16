@@ -33,6 +33,16 @@ export class DoctorService {
   }
 
   //get doctor
+  async getDoctor(id: string): Promise<IDoctor[]> {
+    const documents = await this.doctorRepository.getDoctor(id);
+    if (!documents) {
+      throw new NotFoundError('No doctors found');
+    } else {
+      return documents;
+    }
+  }
+
+  //get doctors
   async getDoctors(): Promise<IDoctor[]> {
     const documents = await this.doctorRepository.getDoctors();
     if (!documents) {
@@ -53,7 +63,12 @@ export class DoctorService {
   }
 
   //unblock a doctor
-  async unblockUser(id: string): Promise<IDoctor | null> {
+  async unblockDoctor(id: string): Promise<IDoctor | null> {
     return await this.doctorRepository.unblockDoctor(id);
+  }
+
+  //update password
+  async updatePassword(id: string, newPass: string): Promise<IDoctor | null> {
+    return await this.doctorRepository.passwordChange(id, newPass);
   }
 }

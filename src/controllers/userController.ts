@@ -66,4 +66,56 @@ export class UserController {
       }
     }
   };
+
+  // retrieve user from database
+  getUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      if (id) {
+        const document = await userService.getUser(id);
+        if (document) {
+          res.status(200).send(...document);
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+    }
+  };
+
+  //update existing password of user
+  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      const oldPass = (req.body as { password?: string }).password;
+      const newPass = (req.body as { confirm_password?: string })
+        .confirm_password;
+      if (id) {
+        const document = await userService.getUser(id);
+        if (document && oldPass) {
+          const passCheck = await bcrypt.compare(oldPass, document[0].password);
+          if (passCheck && newPass) {
+            const hashedPass = await bcrypt.hash(newPass, 10);
+            await userService.updatePassword(id, hashedPass);
+            res.status(200).json({ success: 'Password updated' });
+          } else {
+            throw new BadRequestError('Incorrect Password');
+          }
+        } else {
+          throw new BadRequestError('Document not found');
+        }
+      } else {
+        throw new BadRequestError('Invalid id');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+    }
+  };
 }
