@@ -1,3 +1,4 @@
+import { IDept } from '../common/types/department';
 import { IUser } from '../common/types/user';
 import { AdminRepository } from '../repositories/adminRepository';
 import { UserRepository } from '../repositories/userRepository';
@@ -30,5 +31,9 @@ export class AdminService {
   //unblock a user
   async unblockUser(id: string): Promise<IUser | null> {
     return await this.adminRepository.unblockUser(id);
+  }
+
+  async createDept(name: IDept): Promise<IDept | null> {
+    return await this.adminRepository.createDept(name);
   }
 }
