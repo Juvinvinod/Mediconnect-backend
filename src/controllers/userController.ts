@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { matchedData } from 'express-validator/src/matched-data';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { IUser } from '../common/types/user';
 import { UserService } from '../services/userService';
 import { BadRequestError } from '../common/errors/badRequestError';
+import { login } from '../utilities/loginFunction';
 
 const userService = new UserService(); // create an instance of userService
 
@@ -39,27 +39,7 @@ export class UserController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      interface LoginData {
-        email: string;
-        password: string;
-      }
-
-      const { email, password } = req.body as LoginData;
-      const user = await userService.login(email);
-
-      if (user) {
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (validPassword) {
-          const payload = { subject: user._id };
-          const role = user.role;
-          const token = jwt.sign(payload, process.env.JWT_SECRET);
-          res.status(200).send({ token, role });
-        } else {
-          throw new BadRequestError('Incorrect username/password');
-        }
-      } else {
-        throw new BadRequestError('Incorrect username/password');
-      }
+      await login(req, res, next, userService, 'user');
     } catch (error) {
       if (error instanceof Error) {
         return next(error);

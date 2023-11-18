@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+
 import { BadRequestError } from '../common/errors/badRequestError';
 import { UserService } from '../services/userService';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { AdminService } from '../services/adminService';
 import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
+import { login } from '../utilities/loginFunction';
 
 const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
@@ -18,27 +18,7 @@ export class AdminController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      interface LoginData {
-        email: string;
-        password: string;
-      }
-
-      const { email, password } = req.body as LoginData;
-      const user = await userService.login(email);
-
-      if (user && user.role === 'admin') {
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (validPassword) {
-          const payload = { subject: user._id };
-          const role = user.role;
-          const token = jwt.sign(payload, process.env.JWT_SECRET);
-          res.status(200).send({ token, role });
-        } else {
-          throw new BadRequestError('Incorrect username/password');
-        }
-      } else {
-        throw new BadRequestError('Incorrect username/password');
-      }
+      await login(req, res, next, userService, 'admin');
     } catch (error) {
       if (error instanceof Error) {
         return next(error);
@@ -144,6 +124,22 @@ export class AdminController {
       }
       await adminService.unblockUser(id);
       res.status(200).json({ success: 'Doctor unblocked' });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  //function to create department
+  createDept = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { dept_name } = req.body as { dept_name: string };
+      if (!dept_name) {
+        throw new BadRequestError('Invalid request');
+      }
+      await adminService.createDept({ dept_name });
+      res.status(200).json({ success: 'Department created' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);
