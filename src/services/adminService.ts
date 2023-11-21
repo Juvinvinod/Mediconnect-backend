@@ -33,7 +33,13 @@ export class AdminService {
     return await this.adminRepository.unblockUser(id);
   }
 
+  //create a department
   async createDept(name: IDept): Promise<IDept | null> {
     return await this.adminRepository.createDept(name);
+  }
+
+  //get all departments
+  async getDept(): Promise<IDept[] | null> {
+    return await this.adminRepository.getDept();
   }
 }

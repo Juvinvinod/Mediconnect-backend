@@ -98,4 +98,17 @@ export class UserController {
       }
     }
   };
+
+  getAllSlots = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const documents = await userService.getSLots();
+      if (documents) {
+        res.status(200).send(documents);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+    }
+  };
 }

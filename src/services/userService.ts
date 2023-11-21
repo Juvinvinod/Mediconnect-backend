@@ -2,6 +2,7 @@ import { BadRequestError } from '../common/errors/badRequestError';
 import { IUser } from '../common/types/user';
 import { UserRepository } from '../repositories/userRepository';
 import { NotFoundError } from '../common/errors/notFoundError';
+import { IBooking } from '../common/types/booking';
 
 // functions to interact with database,handle errors if any
 export class UserService {
@@ -61,5 +62,10 @@ export class UserService {
   //update password
   async updatePassword(id: string, newPass: string): Promise<IUser | null> {
     return await this.userRepository.passwordChange(id, newPass);
+  }
+
+  //get all booking documents
+  async getSLots(): Promise<IBooking[] | null> {
+    return await this.userRepository.getSlots();
   }
 }

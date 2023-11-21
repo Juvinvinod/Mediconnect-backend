@@ -12,6 +12,7 @@ router.put('/editUsers/:id', verifyToken, adminController.updateUser); // update
 router.get('/editUser/:id', verifyToken, adminController.getUser); //retrieve a user from database
 router.patch('/blockUser', verifyToken, adminController.blockUser); //block a user
 router.patch('/unblockUser', verifyToken, adminController.unblockUser); //unblock user
-router.post('/createDept', adminController.createDept); //create a new department
+router.post('/addDept', adminController.createDept); //create a new department
+router.get('/getDept', adminController.getDept); //get all departments
 
 export default router;

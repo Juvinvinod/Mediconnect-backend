@@ -1,5 +1,7 @@
 import { NotFoundError } from '../common/errors/notFoundError';
+import { IBooking } from '../common/types/booking';
 import { IDoctor } from '../common/types/doctor';
+import { Booking } from '../models/bookingModel';
 import { Doctor } from '../models/doctorModel';
 
 export class DoctorRepository {
@@ -68,5 +70,11 @@ export class DoctorRepository {
       return await doctor.save();
     }
     throw new NotFoundError('Doctor not found');
+  }
+
+  //create a booking slot
+  async createSlot(data: IBooking): Promise<IBooking> {
+    const slot = Booking.build(data);
+    return await slot.save();
   }
 }

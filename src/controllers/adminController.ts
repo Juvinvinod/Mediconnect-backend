@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 
 import { BadRequestError } from '../common/errors/badRequestError';
@@ -6,6 +7,8 @@ import { AdminService } from '../services/adminService';
 import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { login } from '../utilities/loginFunction';
+import cloudinary from '../config/cloudinary';
+import { UploadApiResponse } from 'cloudinary';
 
 const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
@@ -134,12 +137,33 @@ export class AdminController {
   //function to create department
   createDept = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // const { image } = req.body as { image: string };
+
+      // const data: UploadApiResponse = await cloudinary.uploader.upload(image, {
+      //   folder: 'deptImage',
+      // });
       const { dept_name } = req.body as { dept_name: string };
       if (!dept_name) {
         throw new BadRequestError('Invalid request');
       }
       await adminService.createDept({ dept_name });
       res.status(200).json({ success: 'Department created' });
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  //function to get all departments
+  getDept = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const documents = await adminService.getDept();
+      if (documents) {
+        res.status(200).send(documents);
+      } else {
+        throw new NotFoundError('No documents found');
+      }
     } catch (error) {
       if (error instanceof Error) {
         next(error);

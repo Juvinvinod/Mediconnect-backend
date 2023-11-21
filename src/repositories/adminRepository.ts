@@ -30,4 +30,9 @@ export class AdminRepository {
     const dept = Department.build(name);
     return await dept.save();
   }
+
+  //get department
+  async getDept(): Promise<IDept[] | null> {
+    return await Department.find({});
+  }
 }
