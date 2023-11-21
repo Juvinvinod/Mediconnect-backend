@@ -1,6 +1,8 @@
 import { User } from '../models/userModel';
 import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
+import { IBooking } from '../common/types/booking';
+import { Booking } from '../models/bookingModel';
 
 export class UserRepository {
   // create a new user and save it in database
@@ -42,5 +44,10 @@ export class UserRepository {
       return await user.save();
     }
     throw new NotFoundError('user not found');
+  }
+
+  //function to get all slots
+  async getSlots(): Promise<IBooking[] | null> {
+    return await Booking.find({});
   }
 }

@@ -20,5 +20,6 @@ router.patch('/blockDoctor', verifyToken, doctorController.blockDoctor); //block
 router.patch('/unblockDoctor', verifyToken, doctorController.unblockDoctor); //unblock doctor
 router.get('/profile', verifyToken, doctorController.getProfile); // get doctor profile
 router.put('/password', verifyToken, doctorController.updatePassword); // update user in the database
+router.post('/createSlot', verifyToken, doctorController.makeSlot); //create slots
 
 export default router;

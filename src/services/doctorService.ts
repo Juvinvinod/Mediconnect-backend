@@ -1,5 +1,6 @@
 import { BadRequestError } from '../common/errors/badRequestError';
 import { NotFoundError } from '../common/errors/notFoundError';
+import { IBooking } from '../common/types/booking';
 import { IDoctor } from '../common/types/doctor';
 import { DoctorRepository } from '../repositories/doctorRepository';
 
@@ -70,5 +71,10 @@ export class DoctorService {
   //update password
   async updatePassword(id: string, newPass: string): Promise<IDoctor | null> {
     return await this.doctorRepository.passwordChange(id, newPass);
+  }
+
+  //create slot
+  async createSlot(details: IBooking): Promise<IBooking> {
+    return await this.doctorRepository.createSlot(details);
   }
 }
