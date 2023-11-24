@@ -12,6 +12,7 @@ export interface BookingDoc extends Document {
   fees: string;
   patient_name: string;
   status?: string;
+  patient_id?: string;
 }
 
 // let typescript know there is a statics method in userSchema
@@ -22,10 +23,10 @@ interface BookingModel extends Model<BookingDoc> {
 //doctor model
 const bookingSchema = new Schema({
   doctor_id: {
-    // type: mongoose.Schema.Types.ObjectId,
-    // ref: 'Doctor',
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Doctor',
+    // type: String,
+    // required: true,
   },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -47,7 +48,7 @@ const bookingSchema = new Schema({
     type: Date,
     required: true,
   },
-  patient_name: {
+  patient_id: {
     type: String,
     default: '',
   },

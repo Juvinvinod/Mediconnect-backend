@@ -8,6 +8,6 @@ export interface IBooking {
   start_time: string;
   end_time: string;
   fees: string;
-  patient_name: string;
   status?: string;
+  patient_id?: string;
 }

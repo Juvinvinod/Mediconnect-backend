@@ -187,15 +187,20 @@ export class DoctorController {
   makeSlot = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const formDetails = req.body as IBooking;
+      console.log(formDetails);
+      const date = formDetails.date;
       const { start_time, end_time } = formDetails;
       const startMoment = moment(start_time, 'HH:mm');
       const endMoment = moment(end_time, 'HH:mm');
+      const newDate = moment(date);
+      const formattedDate = newDate.format('YYYY-MM-DD');
       // Initialize an array to store the time range entries
       // Loop to add 15 minutes to the start time until it reaches or exceeds the end time
       // Create a copy of formDetails to avoid modifying the original object in the loop
       const currentFormDetails = { ...formDetails };
       currentFormDetails.doctor_id = (req.body as { _id?: string })?._id;
       currentFormDetails._id = undefined;
+      currentFormDetails.date = formattedDate;
 
       // Loop to add 15 minutes to the start time until it reaches or exceeds the end time
       while (startMoment.isBefore(endMoment)) {
