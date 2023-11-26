@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import moment from 'moment';
 
 import { BookingService } from '../services/bookingService';
 import { NotFoundError } from '../common/errors/notFoundError';
@@ -80,6 +79,51 @@ export class BookingController {
       if (documents) {
         return res.status(200).send(documents);
       }
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  //update slots
+  updateSlots = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const body = req.body as { user_id: string; status: string };
+      const id = body.user_id;
+      const status = body.status;
+      const documents = await bookingService.updateSlots(id, status);
+      if (documents) {
+        return res.status(200).json({ success: 'document updated' });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  createdDocSlots = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      if (id) {
+        const documents = await bookingService.getDocSlots(id);
+        return res.status(200).send(documents);
+      } else {
+        throw new NotFoundError('id not found');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  deleteSlot = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const start_time = req.params.time;
+      await bookingService.deleteSlot(start_time);
+      return res.status(200).json({ success: 'Slot cancelled' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);

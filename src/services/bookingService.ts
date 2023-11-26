@@ -37,4 +37,24 @@ export class BookingService {
   async getDocBookings(id: string) {
     return await this.bookingRepository.getDoctorDocs(id);
   }
+
+  //update Bookings
+  async updateSlots(id: string, status: string) {
+    return await this.bookingRepository.updateBookingStatus(id, status);
+  }
+
+  //find if document exists
+  async findDoc(date: string) {
+    return await this.bookingRepository.findDate(date);
+  }
+
+  //find the doctors slots in db
+  async getDocSlots(id: string) {
+    return await this.bookingRepository.getDoctorSlots(id);
+  }
+
+  //delete slot document in db
+  async deleteSlot(time: string) {
+    return await this.bookingRepository.deleteSlot(time);
+  }
 }

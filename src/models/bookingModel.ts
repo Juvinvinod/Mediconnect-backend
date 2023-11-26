@@ -49,8 +49,10 @@ const bookingSchema = new Schema({
     required: true,
   },
   patient_id: {
-    type: String,
-    default: '',
+    // type: String,
+    // default: '',
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   status: {
     type: String,

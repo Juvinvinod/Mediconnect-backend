@@ -35,6 +35,40 @@ export class BookingRepository {
 
   // get all docs based on doctorId
   async getDoctorDocs(id: string) {
-    return await Booking.find({ doctor_id: id });
+    return await Booking.find({
+      doctor_id: id,
+    }).populate({
+      path: 'patient_id',
+      model: 'user',
+    });
+  }
+
+  async updateBookingStatus(id: string, status: string) {
+    const slot = await Booking.findOne({ _id: id });
+    if (slot) {
+      slot.set({ status: status });
+      return await slot.save();
+    }
+    throw new NotFoundError('Slot not found');
+  }
+
+  //find document with same date
+  async findDate(date: string) {
+    return await Booking.findOne({ date: date });
+  }
+
+  //find all slots created by doctor
+  async docSlots(_id: string) {
+    return await Booking.find({
+      doctor_id: _id,
+      status: 'upcoming',
+    });
+  }
+
+  //delete a slot
+  async deleteSlot(time: string) {
+    return await Booking.deleteOne({
+      start_time: time,
+    });
   }
 }

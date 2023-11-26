@@ -6,6 +6,7 @@ import { IUser } from '../common/types/user';
 import { UserService } from '../services/userService';
 import { BadRequestError } from '../common/errors/badRequestError';
 import { login } from '../utilities/loginFunction';
+// import Razorpay from 'razorpay';
 
 const userService = new UserService(); // create an instance of userService
 
@@ -111,4 +112,15 @@ export class UserController {
       }
     }
   };
+
+  // createPayment = async (req: Request, res: Response, next: NextFunction) =>{
+  //   try {
+  //     const razorpay = new Razorpay({
+  //       key_id: process.env.RAZORPAY_KEY,
+  //       key_secret: process.env.RAZORPAY_SECRET,
+  //     });
+  //   } catch (error) {
+
+  //   }
+  // }
 }
