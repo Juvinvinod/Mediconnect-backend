@@ -8,6 +8,8 @@ declare global {
       CLOUDINARY_USER_NAME: string;
       CLOUDINARY_API_KEY: string;
       CLOUDINARY_API_SECRET: string;
+      RAZORPAY_KEY: string;
+      RAZORPAY_SECRET: string;
       // add more environment variables and their types here
     }
   }

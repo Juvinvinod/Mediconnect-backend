@@ -8,8 +8,10 @@ import { BadRequestError } from '../common/errors/badRequestError';
 import { IDoctor } from '../common/types/doctor';
 import { matchedData } from 'express-validator/src/matched-data';
 import { IBooking } from '../common/types/booking';
+import { BookingService } from '../services/bookingService';
 
 const doctorService = new DoctorService();
+const bookingService = new BookingService();
 
 export class DoctorController {
   //check if a doctor already exists else create a new doctor
@@ -192,31 +194,38 @@ export class DoctorController {
       const { start_time, end_time } = formDetails;
       const startMoment = moment(start_time, 'HH:mm');
       const endMoment = moment(end_time, 'HH:mm');
-      const newDate = moment(date);
+      const newDate = moment(date).startOf('day');
       const formattedDate = newDate.format('YYYY-MM-DD');
+
       // Initialize an array to store the time range entries
       // Loop to add 15 minutes to the start time until it reaches or exceeds the end time
       // Create a copy of formDetails to avoid modifying the original object in the loop
-      const currentFormDetails = { ...formDetails };
-      currentFormDetails.doctor_id = (req.body as { _id?: string })?._id;
-      currentFormDetails._id = undefined;
-      currentFormDetails.date = formattedDate;
+      console.log(formattedDate);
+      const exists = await bookingService.findDoc(formattedDate);
+      if (exists) {
+        throw new BadRequestError('Slot already exists');
+      } else {
+        const currentFormDetails = { ...formDetails };
+        currentFormDetails.doctor_id = (req.body as { _id?: string })?._id;
+        currentFormDetails._id = undefined;
+        currentFormDetails.date = formattedDate;
 
-      // Loop to add 15 minutes to the start time until it reaches or exceeds the end time
-      while (startMoment.isBefore(endMoment)) {
-        // Update the start time in the currentFormDetails
-        currentFormDetails.start_time = startMoment.format();
-        currentFormDetails.end_time = startMoment.add(15, 'minutes').format();
-        // Create a new slot with the currentFormDetails
-        console.log(currentFormDetails);
+        // Loop to add 15 minutes to the start time until it reaches or exceeds the end time
+        while (startMoment.isBefore(endMoment)) {
+          // Update the start time in the currentFormDetails
+          currentFormDetails.start_time = startMoment.format();
+          currentFormDetails.end_time = startMoment.add(15, 'minutes').format();
+          // Create a new slot with the currentFormDetails
+          console.log(currentFormDetails);
 
-        await doctorService.createSlot(currentFormDetails);
+          await doctorService.createSlot(currentFormDetails);
 
-        // Add 15 minutes to the start time
-        // startMoment.add(15, 'minutes');
+          // Add 15 minutes to the start time
+          // startMoment.add(15, 'minutes');
+        }
+
+        res.status(201).json({ success: 'Slots created successfully' });
       }
-
-      res.status(201).json({ success: 'Slots created successfully' });
     } catch (error) {
       if (error instanceof Error) {
         next(error);

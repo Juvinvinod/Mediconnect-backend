@@ -4,7 +4,7 @@ export interface IBooking {
   doctor_id?: string;
   user_id?: string;
   payment: string;
-  date: string;
+  date: string | Date;
   start_time: string;
   end_time: string;
   fees: string;
