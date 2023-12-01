@@ -130,4 +130,21 @@ export class BookingController {
       }
     }
   };
+
+  getAllBookedSlots = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const documents = await bookingService.getAllSlots();
+      console.log(documents);
+
+      return res.status(200).send(documents);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
 }

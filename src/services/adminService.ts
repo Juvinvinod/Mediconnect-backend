@@ -42,4 +42,17 @@ export class AdminService {
   async getDept(): Promise<IDept[] | null> {
     return await this.adminRepository.getDept();
   }
+
+  //get count of documents
+  async getCount(model: string) {
+    if (model === 'doctor') {
+      return await this.adminRepository.docCount();
+    }
+    if (model === 'user') {
+      return await this.adminRepository.userCount();
+    }
+    if (model === 'staff') {
+      return await this.adminRepository.staffCount();
+    }
+  }
 }
