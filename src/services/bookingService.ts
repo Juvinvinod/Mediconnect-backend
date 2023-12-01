@@ -57,4 +57,9 @@ export class BookingService {
   async deleteSlot(time: string) {
     return await this.bookingRepository.deleteSlot(time);
   }
+
+  //get all booked documents
+  async getAllSlots() {
+    return await this.bookingRepository.getAllSlots();
+  }
 }

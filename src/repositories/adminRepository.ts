@@ -3,6 +3,8 @@ import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IDept } from '../common/types/department';
 import { Department } from '../models/departmentModel';
+import { Doctor } from '../models/doctorModel';
+import { Staff } from '../models/staffModel';
 
 export class AdminRepository {
   //function to block a user
@@ -34,5 +36,20 @@ export class AdminRepository {
   //get department
   async getDept(): Promise<IDept[] | null> {
     return await Department.find({});
+  }
+
+  //get user count
+  async userCount(): Promise<number> {
+    return await User.find({ role: 'user' }).count();
+  }
+
+  //get doctor count
+  async docCount(): Promise<number> {
+    return await Doctor.find({}).count();
+  }
+
+  //get staff count
+  async staffCount(): Promise<number> {
+    return await Staff.find({}).count();
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 
 import { BadRequestError } from '../common/errors/badRequestError';
@@ -7,8 +6,8 @@ import { AdminService } from '../services/adminService';
 import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { login } from '../utilities/loginFunction';
-import cloudinary from '../config/cloudinary';
-import { UploadApiResponse } from 'cloudinary';
+// import cloudinary from '../config/cloudinary';
+// import { UploadApiResponse } from 'cloudinary';
 
 const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
@@ -164,6 +163,23 @@ export class AdminController {
       } else {
         throw new NotFoundError('No documents found');
       }
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  //get count of documents
+  getCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const model = req.params.model;
+      if (!model) {
+        throw new BadRequestError('Invalid request');
+      }
+      const doc = await adminService.getCount(model);
+      const count = doc?.toString();
+      res.status(200).send(count);
     } catch (error) {
       if (error instanceof Error) {
         next(error);

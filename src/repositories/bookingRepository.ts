@@ -71,4 +71,33 @@ export class BookingRepository {
       start_time: time,
     });
   }
+
+  //get number of booked slots for each doctors
+  async getAllSlots() {
+    const aggregatedDocs: IBooking[] = await Booking.aggregate([
+      {
+        $match: {
+          status: 'booked',
+        },
+      },
+      {
+        $lookup: {
+          from: 'doctors',
+          foreignField: '_id',
+          localField: 'doctor_id',
+          as: 'doctorInfo',
+        },
+      },
+      { $unwind: '$doctorInfo' },
+      {
+        $group: {
+          _id: '$doctor_id',
+          doctorName: { $first: '$doctorInfo.first_name' },
+          totalBookings: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return aggregatedDocs;
+  }
 }

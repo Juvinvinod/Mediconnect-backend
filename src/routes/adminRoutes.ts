@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { AdminController } from '../controllers/adminController';
+
 import { verifyToken } from '../middlewares/tokenChecker';
+import { AdminController } from '../controllers/adminController';
+import { BookingController } from '../controllers/bookingController';
 
 const adminController = new AdminController();
+const bookingController = new BookingController();
 const router = Router();
 
 router.post('/login', adminController.login); //validate credentials and provide token
@@ -14,5 +17,7 @@ router.patch('/blockUser', verifyToken, adminController.blockUser); //block a us
 router.patch('/unblockUser', verifyToken, adminController.unblockUser); //unblock user
 router.post('/addDept', adminController.createDept); //create a new department
 router.get('/getDept', adminController.getDept); //get all departments
+router.get('/totalCount/:model', verifyToken, adminController.getCount); //get count of documents
+router.get('/getBookings', verifyToken, bookingController.getAllBookedSlots); // get all booked slots
 
 export default router;
