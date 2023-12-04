@@ -1,7 +1,8 @@
 import { IBooking } from '../common/types/booking';
 import { BookingRepository } from '../repositories/bookingRepository';
+import { IBookingService } from './interfaces/bookingService.interface';
 
-export class BookingService {
+export class BookingService implements IBookingService {
   private bookingRepository: BookingRepository;
 
   constructor() {
@@ -44,8 +45,8 @@ export class BookingService {
   }
 
   //find if document exists
-  async findDoc(date: string) {
-    return await this.bookingRepository.findDate(date);
+  async findDoc(_id: string, date: string) {
+    return await this.bookingRepository.findDate(_id, date);
   }
 
   //find the doctors slots in db
@@ -59,7 +60,12 @@ export class BookingService {
   }
 
   //get all booked documents
-  async getAllSlots() {
+  async getAllSlots(): Promise<IBooking[]> {
     return await this.bookingRepository.getAllSlots();
+  }
+
+  //get all booked documents per department
+  async getSlotsPerDept() {
+    return await this.bookingRepository.patientsPerDept();
   }
 }

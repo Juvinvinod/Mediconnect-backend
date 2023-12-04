@@ -3,8 +3,9 @@ import { IBooking } from '../common/types/booking';
 import { IDoctor } from '../common/types/doctor';
 import { Booking } from '../models/bookingModel';
 import { Doctor } from '../models/doctorModel';
+import { IDoctorRepository } from './interfaces/doctorRepository.interface';
 
-export class DoctorRepository {
+export class DoctorRepository implements IDoctorRepository {
   // create a new doctor
   async createDoctor(doctorDetails: IDoctor): Promise<IDoctor> {
     const doctor = Doctor.build(doctorDetails);

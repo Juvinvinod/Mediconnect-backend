@@ -3,8 +3,9 @@ import { NotFoundError } from '../common/errors/notFoundError';
 import { IBooking } from '../common/types/booking';
 import { IDoctor } from '../common/types/doctor';
 import { DoctorRepository } from '../repositories/doctorRepository';
+import { IDoctorService } from './interfaces/doctorService.interface';
 
-export class DoctorService {
+export class DoctorService implements IDoctorService {
   private doctorRepository: DoctorRepository;
 
   constructor() {

@@ -1,8 +1,9 @@
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IStaff } from '../common/types/staff';
 import { Staff } from '../models/staffModel';
+import { IStaffRepository } from './interfaces/staffRepository.interface';
 
-export class StaffRepository {
+export class StaffRepository implements IStaffRepository {
   // create a new staff and save it in database
   async createStaff(staffDetails: IStaff): Promise<IStaff> {
     const staff = Staff.build(staffDetails);

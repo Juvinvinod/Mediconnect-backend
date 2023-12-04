@@ -19,5 +19,7 @@ router.post('/addDept', adminController.createDept); //create a new department
 router.get('/getDept', adminController.getDept); //get all departments
 router.get('/totalCount/:model', verifyToken, adminController.getCount); //get count of documents
 router.get('/getBookings', verifyToken, bookingController.getAllBookedSlots); // get all booked slots
+router.get('/departmentSlots', verifyToken, adminController.patientsPerDept); // get number of patients per department
+router.put('/editDepartment/:id', verifyToken, adminController.updateDept); //update department name
 
 export default router;

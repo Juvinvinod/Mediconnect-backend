@@ -5,8 +5,9 @@ import { IDept } from '../common/types/department';
 import { Department } from '../models/departmentModel';
 import { Doctor } from '../models/doctorModel';
 import { Staff } from '../models/staffModel';
+import { IAdminRepository } from './interfaces/adminRepository.interface';
 
-export class AdminRepository {
+export class AdminRepository implements IAdminRepository {
   //function to block a user
   async blockUser(id: string): Promise<IUser> {
     const user = await User.findOne({ _id: id });
@@ -51,5 +52,13 @@ export class AdminRepository {
   //get staff count
   async staffCount(): Promise<number> {
     return await Staff.find({}).count();
+  }
+
+  //update department name
+  async updateDept(_id: string, dept: string): Promise<IDept | null> {
+    return await Department.findByIdAndUpdate(
+      { _id: _id },
+      { dept_name: dept }
+    );
   }
 }

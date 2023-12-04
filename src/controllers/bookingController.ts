@@ -138,8 +138,6 @@ export class BookingController {
   ) => {
     try {
       const documents = await bookingService.getAllSlots();
-      console.log(documents);
-
       return res.status(200).send(documents);
     } catch (error) {
       if (error instanceof Error) {

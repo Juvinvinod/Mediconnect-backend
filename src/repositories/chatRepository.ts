@@ -1,10 +1,12 @@
+import { NotFoundError } from '../common/errors/notFoundError';
 import { IChat } from '../common/types/chat';
 import { IMessage } from '../common/types/message';
 import { Chat } from '../models/chatModel';
 import { Message } from '../models/messageModel';
+import { IChatRepository } from './interfaces/chatRepository.interface';
 
-export class ChatRepository {
-  async findChat(doctorID: string, userId: string) {
+export class ChatRepository implements IChatRepository {
+  async findChat(doctorID: string, userId: string): Promise<IChat[]> {
     return await Chat.find({
       user_id: userId,
       doctor_id: doctorID,
@@ -32,9 +34,21 @@ export class ChatRepository {
   }
 
   // create a message
-  async createMessage(data: IMessage) {
+  async createMessage(data: IMessage): Promise<IMessage> {
     const message = Message.build(data);
     return await message.save();
+  }
+
+  //find a message
+  async findMessage(_id: string): Promise<IMessage[]> {
+    if (_id) {
+      return await Message.find({ _id: _id }).populate({
+        path: 'chat_id',
+        model: 'chat',
+      });
+    } else {
+      throw new NotFoundError('ID not found');
+    }
   }
 
   //update latest Message
