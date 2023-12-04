@@ -3,8 +3,9 @@ import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IBooking } from '../common/types/booking';
 import { Booking } from '../models/bookingModel';
+import { IUserRepository } from './interfaces/userRepository.interface';
 
-export class UserRepository {
+export class UserRepository implements IUserRepository {
   // create a new user and save it in database
   async createUser(userDetails: IUser): Promise<IUser> {
     const user = User.build(userDetails);

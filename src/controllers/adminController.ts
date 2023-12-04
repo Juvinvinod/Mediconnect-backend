@@ -6,11 +6,14 @@ import { AdminService } from '../services/adminService';
 import { IUser } from '../common/types/user';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { login } from '../utilities/loginFunction';
+import { BookingService } from '../services/bookingService';
+import { IDept } from '../common/types/department';
 // import cloudinary from '../config/cloudinary';
 // import { UploadApiResponse } from 'cloudinary';
 
 const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
+const bookingService = new BookingService(); // create an instance of bookingService
 
 export class AdminController {
   // function to check whether user is an admin,if so then provide them with token
@@ -170,6 +173,24 @@ export class AdminController {
     }
   };
 
+  //update department name
+  updateDept = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+      const dept = req.body as IDept;
+      if (!id || !dept) {
+        throw new BadRequestError('Invalid request');
+      } else {
+        await adminService.updateDept(id, dept.dept_name);
+        res.status(200).json({ success: 'Department updated' });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
   //get count of documents
   getCount = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -180,6 +201,21 @@ export class AdminController {
       const doc = await adminService.getCount(model);
       const count = doc?.toString();
       res.status(200).send(count);
+    } catch (error) {
+      if (error instanceof Error) {
+        next(error);
+      }
+    }
+  };
+
+  patientsPerDept = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const documents = await bookingService.getSlotsPerDept();
+      if (documents) {
+        res.status(200).send(documents);
+      } else {
+        throw new NotFoundError('No documents found');
+      }
     } catch (error) {
       if (error instanceof Error) {
         next(error);

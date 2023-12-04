@@ -2,8 +2,8 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IMessage } from '../common/types/message';
 
 export interface MessageDoc extends Document {
-  chat_id?: string;
-  sender_id?: string;
+  chat_id: string;
+  sender_id: string;
   text: string;
 }
 

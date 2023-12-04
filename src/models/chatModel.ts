@@ -2,9 +2,9 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 import { IChat } from '../common/types/chat';
 
 export interface ChatDoc extends Document {
-  doctor_id?: string;
-  user_id?: string;
-  latest_message?: string;
+  doctor_id: string;
+  user_id: string;
+  latest_message: string;
 }
 
 // let typescript know there is a statics method in userSchema

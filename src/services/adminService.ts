@@ -2,9 +2,10 @@ import { IDept } from '../common/types/department';
 import { IUser } from '../common/types/user';
 import { AdminRepository } from '../repositories/adminRepository';
 import { UserRepository } from '../repositories/userRepository';
+import { IAdminService } from './interfaces/adminService.interface';
 
 // functions to interact with database,handle errors if any
-export class AdminService {
+export class AdminService implements IAdminService {
   private adminRepository: AdminRepository;
   private userRepository: UserRepository;
 
@@ -41,6 +42,11 @@ export class AdminService {
   //get all departments
   async getDept(): Promise<IDept[] | null> {
     return await this.adminRepository.getDept();
+  }
+
+  //update department name
+  async updateDept(_id: string, dept: string) {
+    return await this.adminRepository.updateDept(_id, dept);
   }
 
   //get count of documents

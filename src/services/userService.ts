@@ -3,9 +3,10 @@ import { IUser } from '../common/types/user';
 import { UserRepository } from '../repositories/userRepository';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IBooking } from '../common/types/booking';
+import { IUserService } from './interfaces/userService.interface';
 
 // functions to interact with database,handle errors if any
-export class UserService {
+export class UserService implements IUserService {
   private userRepository: UserRepository;
 
   constructor() {

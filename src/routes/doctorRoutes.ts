@@ -16,7 +16,7 @@ router.post(
   doctorController.signup
 ); //create a new user
 router.post('/login', doctorController.login); //validate credentials and provide token
-router.get('/doctors', verifyToken, doctorController.getDoctors); // send all the user documents from database
+router.get('/doctors', doctorController.getDoctors); // send all the user documents from database
 router.put('/editDoctor/:id', verifyToken, doctorController.updateDoctor); // update user in the database
 router.patch('/blockDoctor', verifyToken, doctorController.blockDoctor); //block a doctor
 router.patch('/unblockDoctor', verifyToken, doctorController.unblockDoctor); //unblock doctor

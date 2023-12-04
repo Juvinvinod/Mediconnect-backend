@@ -2,9 +2,10 @@ import { BadRequestError } from '../common/errors/badRequestError';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IStaff } from '../common/types/staff';
 import { StaffRepository } from '../repositories/staffRepository';
+import { IStaffService } from './interfaces/staffService.interface';
 
 // functions to interact with database,handle errors if any
-export class StaffService {
+export class StaffService implements IStaffService {
   private staffRepository: StaffRepository;
 
   constructor() {
