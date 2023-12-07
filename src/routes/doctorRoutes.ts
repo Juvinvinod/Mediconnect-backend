@@ -24,7 +24,7 @@ router.get('/profile', verifyToken, doctorController.getProfile); // get doctor 
 router.put('/password', verifyToken, doctorController.updatePassword); // update user in the database
 router.post('/createSlot', verifyToken, doctorController.makeSlot); //create slots
 router.get('/getSlots', verifyToken, bookingController.getDoctorBookingDocs); // get all booking related to doctor
-router.patch('/updateSlot', verifyToken, bookingController.updateSlots); //update booking slot
+router.put('/updateSlot', verifyToken, bookingController.updateSlots); //update booking slot
 router.get('/mySlots', verifyToken, bookingController.createdDocSlots); //get slots created by the doctor
 router.delete('/deleteSlot/:time', verifyToken, bookingController.deleteSlot); // delete a slot
 

@@ -9,11 +9,12 @@ import { IDoctor } from '../common/types/doctor';
 import { matchedData } from 'express-validator/src/matched-data';
 import { IBooking } from '../common/types/booking';
 import { BookingService } from '../services/bookingService';
+import { IDoctorController } from './interfaces/doctorController.interface';
 
 const doctorService = new DoctorService();
 const bookingService = new BookingService();
 
-export class DoctorController {
+export class DoctorController implements IDoctorController {
   //check if a doctor already exists else create a new doctor
   signup = async (
     req: Request,
@@ -90,7 +91,11 @@ export class DoctorController {
   };
 
   //block doctor
-  blockDoctor = async (req: Request, res: Response, next: NextFunction) => {
+  blockDoctor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -106,7 +111,11 @@ export class DoctorController {
   };
 
   //unblock doctor
-  unblockDoctor = async (req: Request, res: Response, next: NextFunction) => {
+  unblockDoctor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -122,7 +131,11 @@ export class DoctorController {
   };
 
   //get doctor profile
-  getProfile = async (req: Request, res: Response, next: NextFunction) => {
+  getProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = (req.body as { _id?: string })?._id;
       if (id) {
@@ -139,7 +152,11 @@ export class DoctorController {
   };
 
   //get doctor document
-  getDoctor = async (req: Request, res: Response, next: NextFunction) => {
+  getDoctor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = req.params.id;
       if (id) {
@@ -156,7 +173,11 @@ export class DoctorController {
   };
 
   //update doctor password
-  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+  updatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = (req.body as { _id?: string })?._id;
       const oldPass = (req.body as { password?: string }).password;
@@ -186,7 +207,11 @@ export class DoctorController {
     }
   };
 
-  makeSlot = async (req: Request, res: Response, next: NextFunction) => {
+  makeSlot = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const formDetails = req.body as IBooking;
       console.log(formDetails);

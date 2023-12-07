@@ -8,6 +8,6 @@ export class ForbiddenError extends CustomError {
     Object.setPrototypeOf(this, ForbiddenError.prototype);
   }
   serializeErrors() {
-    return [{ message: this.message }];
+    return { message: this.message };
   }
 }

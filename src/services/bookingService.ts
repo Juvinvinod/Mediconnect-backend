@@ -40,8 +40,12 @@ export class BookingService implements IBookingService {
   }
 
   //update Bookings
-  async updateSlots(id: string, status: string) {
-    return await this.bookingRepository.updateBookingStatus(id, status);
+  async updateSlots(id: string, status: string, prescription: string) {
+    return await this.bookingRepository.updateBookingStatus(
+      id,
+      status,
+      prescription
+    );
   }
 
   //find if document exists
@@ -67,5 +71,15 @@ export class BookingService implements IBookingService {
   //get all booked documents per department
   async getSlotsPerDept() {
     return await this.bookingRepository.patientsPerDept();
+  }
+
+  //get a slot detail
+  async getSlot(id: string) {
+    return await this.bookingRepository.getSlot(id);
+  }
+
+  //cancel slot
+  async cancelSlot(id: string): Promise<null> {
+    return await this.bookingRepository.cancelSlot(id);
   }
 }

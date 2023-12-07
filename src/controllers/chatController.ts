@@ -2,12 +2,17 @@ import { NextFunction, Request, Response } from 'express';
 import { BadRequestError } from '../common/errors/badRequestError';
 import { ChatService } from '../services/chatService';
 import { IMessage } from '../common/types/message';
+import { IChatController } from './interfaces/chatController.interface';
 
 const chatService = new ChatService();
 
-export class ChatController {
+export class ChatController implements IChatController {
   // check if a chat already exists else create a new chat
-  accessChat = async (req: Request, res: Response, next: NextFunction) => {
+  accessChat = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { docId } = req.body as { docId: string };
       const id = (req.body as { _id?: string })?._id;
@@ -17,13 +22,13 @@ export class ChatController {
         const document = await chatService.getChat(docId, id);
 
         if (document.length > 0) {
-          return res.status(200).send(document);
+          res.status(200).send(document);
         } else {
           const chat = await chatService.createChat({
             doctor_id: docId,
             user_id: id,
           });
-          return res.status(200).send(chat);
+          res.status(200).send(chat);
         }
       }
     } catch (error) {
@@ -34,14 +39,18 @@ export class ChatController {
   };
 
   //get all the chats belonging to the user
-  getUserChats = async (req: Request, res: Response, next: NextFunction) => {
+  getUserChats = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const _id = (req.body as { _id?: string })?._id;
       if (!_id) {
         throw new BadRequestError('Id not provided');
       } else {
         const documents = await chatService.getAllChat(_id);
-        return res.status(200).send(documents);
+        res.status(200).send(documents);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -50,7 +59,11 @@ export class ChatController {
     }
   };
 
-  createMessage = async (req: Request, res: Response, next: NextFunction) => {
+  createMessage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const body = req.body as IMessage;
 
@@ -65,7 +78,7 @@ export class ChatController {
           sender_id: _id,
           text: content,
         });
-        return res.status(200).send(document);
+        res.status(200).send(document);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -75,11 +88,15 @@ export class ChatController {
   };
 
   //get all messages
-  getMessages = async (req: Request, res: Response, next: NextFunction) => {
+  getMessages = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const chatId = req.params.chatId;
       const documents = await chatService.getMessages(chatId);
-      return res.status(200).send(documents);
+      res.status(200).send(documents);
     } catch (error) {
       if (error instanceof Error) {
         next(error);
@@ -88,14 +105,18 @@ export class ChatController {
   };
 
   //get all chats belonging to doctor
-  getDocChats = async (req: Request, res: Response, next: NextFunction) => {
+  getDocChats = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const _id = (req.body as { _id?: string })?._id;
       if (!_id) {
         throw new BadRequestError('Id/chat id not provided');
       } else {
         const documents = await chatService.getDocChats(_id);
-        return res.status(200).send(documents);
+        res.status(200).send(documents);
       }
     } catch (error) {
       if (error instanceof Error) {

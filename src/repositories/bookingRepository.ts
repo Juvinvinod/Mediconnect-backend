@@ -1,3 +1,4 @@
+import { BadRequestError } from '../common/errors/badRequestError';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { IBooking } from '../common/types/booking';
 import { Booking } from '../models/bookingModel';
@@ -17,117 +18,179 @@ export class BookingRepository implements IBookingRepository {
     bookingId: string,
     payId: string
   ): Promise<IBooking> {
-    const document = await Booking.findOne({
-      _id: bookingId,
-    });
+    try {
+      const document = await Booking.findOne({
+        _id: bookingId,
+      });
 
-    if (document) {
-      document.patient_id = userId;
-      document.payment = payId;
-      document.status = 'booked';
-      return await document.save();
+      if (document) {
+        document.patient_id = userId;
+        document.payment = payId;
+        document.status = 'booked';
+        return await document.save();
+      }
+      throw new NotFoundError('Booking not found');
+    } catch (error) {
+      throw new BadRequestError('Database Error');
     }
-    throw new NotFoundError('Booking not found');
   }
 
   // get all docs based on userId
   async getDocs(id: string) {
-    return await Booking.find({ patient_id: id })
-      .populate({ path: 'doctor_id', model: 'doctor' })
-      .sort({
-        date: -1,
-        start_time: 1,
-      });
+    try {
+      return await Booking.find({ patient_id: id })
+        .populate({ path: 'doctor_id', model: 'doctor' })
+        .sort({
+          date: -1,
+          start_time: 1,
+        });
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
   // get all docs based on doctorId
   async getDoctorDocs(id: string) {
-    return await Booking.find({
-      doctor_id: id,
-    }).populate({
-      path: 'patient_id',
-      model: 'user',
-    });
+    try {
+      return await Booking.find({
+        doctor_id: id,
+      }).populate({
+        path: 'patient_id',
+        model: 'user',
+      });
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
-  async updateBookingStatus(id: string, status: string) {
-    const slot = await Booking.findOne({ _id: id });
-    if (slot) {
-      slot.set({ status: status });
-      return await slot.save();
+  async updateBookingStatus(id: string, status: string, prescription: string) {
+    try {
+      console.log(id);
+      const slot = await Booking.findOne({ _id: id });
+      if (slot) {
+        slot.set({ status: status, prescription: prescription });
+        return await slot.save();
+      }
+      throw new NotFoundError('Slot not found');
+    } catch (error) {
+      throw new BadRequestError('Database Error');
     }
-    throw new NotFoundError('Slot not found');
   }
 
   //find document with same date
   async findDate(_id: string, date: string) {
-    return await Booking.findOne({ date: date, doctor_id: _id });
+    try {
+      return await Booking.findOne({ date: date, doctor_id: _id });
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
   //find all slots created by doctor
   async docSlots(_id: string) {
-    return await Booking.find({
-      doctor_id: _id,
-      status: 'upcoming',
-    });
+    try {
+      return await Booking.find({
+        doctor_id: _id,
+        status: 'upcoming',
+      });
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
   //delete a slot
   async deleteSlot(time: string): Promise<DeleteResult> {
-    return await Booking.deleteOne({
-      start_time: time,
-    });
+    try {
+      return await Booking.deleteOne({
+        start_time: time,
+      });
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
   //get number of booked slots for each doctors
   async getAllSlots(): Promise<IBooking[]> {
-    const aggregatedDocs: IBooking[] = await Booking.aggregate([
-      {
-        $match: {
-          status: 'booked',
+    try {
+      const aggregatedDocs: IBooking[] = await Booking.aggregate([
+        {
+          $match: {
+            status: 'booked',
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'doctors',
-          foreignField: '_id',
-          localField: 'doctor_id',
-          as: 'doctorInfo',
+        {
+          $lookup: {
+            from: 'doctors',
+            foreignField: '_id',
+            localField: 'doctor_id',
+            as: 'doctorInfo',
+          },
         },
-      },
-      { $unwind: '$doctorInfo' },
-      {
-        $group: {
-          _id: '$doctor_id',
-          doctorName: { $first: '$doctorInfo.first_name' },
-          totalBookings: { $sum: 1 },
+        { $unwind: '$doctorInfo' },
+        {
+          $group: {
+            _id: '$doctor_id',
+            doctorName: { $first: '$doctorInfo.first_name' },
+            totalBookings: { $sum: 1 },
+          },
         },
-      },
-    ]);
+      ]);
 
-    return aggregatedDocs;
+      return aggregatedDocs;
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
   }
 
   async patientsPerDept() {
-    const aggregatedDocs: IBooking[] = await Booking.aggregate([
-      { $match: { status: 'booked' } },
-      {
-        $lookup: {
-          from: 'doctors',
-          foreignField: '_id',
-          localField: 'doctor_id',
-          as: 'doctorInfo',
+    try {
+      const aggregatedDocs: IBooking[] = await Booking.aggregate([
+        { $match: { status: 'booked' } },
+        {
+          $lookup: {
+            from: 'doctors',
+            foreignField: '_id',
+            localField: 'doctor_id',
+            as: 'doctorInfo',
+          },
         },
-      },
-      { $unwind: '$doctorInfo' },
-      {
-        $group: {
-          _id: '$doctor_id',
-          dept: { $first: '$doctorInfo.department' },
-          totalBookings: { $sum: 1 },
+        { $unwind: '$doctorInfo' },
+        {
+          $group: {
+            _id: '$doctor_id',
+            dept: { $first: '$doctorInfo.department' },
+            totalBookings: { $sum: 1 },
+          },
         },
-      },
-    ]);
-    return aggregatedDocs;
+      ]);
+      return aggregatedDocs;
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
+  }
+
+  async getSlot(_id: string): Promise<IBooking[]> {
+    try {
+      return await Booking.find({ _id: _id }).populate([
+        {
+          path: 'patient_id',
+          model: 'user',
+        },
+        {
+          path: 'doctor_id',
+          model: 'doctor',
+        },
+      ]);
+    } catch (error) {
+      throw new BadRequestError('Database Error');
+    }
+  }
+
+  //cancel slot by user
+  async cancelSlot(id: string): Promise<null> {
+    return await Booking.findByIdAndUpdate(
+      { _id: id },
+      { status: 'upcoming', patient_id: null, payment: null }
+    );
   }
 }

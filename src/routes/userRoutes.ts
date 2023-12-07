@@ -24,5 +24,7 @@ router.get('/doctorProfile/:id', doctorController.getDoctor); // get doctor prof
 router.get('/getSlots/:id', bookingController.getUser); // get all slots belonging to a doctor
 router.put('/bookSlot', verifyToken, bookingController.bookSlot); // book a slot
 router.get('/getSlots', verifyToken, bookingController.getBookingDocs); //get all booking docs
+router.get('/getSlot/:id', verifyToken, bookingController.getSlot); //get a slot detail
+router.put('/cancelSlot', verifyToken, bookingController.cancelSlot); //cancel a booked slot
 
 export default router;
