@@ -6,11 +6,12 @@ import { IUser } from '../common/types/user';
 import { UserService } from '../services/userService';
 import { BadRequestError } from '../common/errors/badRequestError';
 import { login } from '../utilities/loginFunction';
+import { IUserController } from './interfaces/userController.interface';
 // import Razorpay from 'razorpay';
 
 const userService = new UserService(); // create an instance of userService
 
-export class UserController {
+export class UserController implements IUserController {
   //check if a user already exists else create new user
   signup = async (
     req: Request,
@@ -70,7 +71,11 @@ export class UserController {
   };
 
   //update existing password of user
-  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+  updatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = (req.body as { _id?: string })?._id;
       const oldPass = (req.body as { password?: string }).password;
@@ -100,7 +105,11 @@ export class UserController {
     }
   };
 
-  getAllSlots = async (req: Request, res: Response, next: NextFunction) => {
+  getAllSlots = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const documents = await userService.getSLots();
       if (documents) {

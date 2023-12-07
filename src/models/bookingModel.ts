@@ -13,6 +13,7 @@ export interface BookingDoc extends Document {
   patient_name: string;
   status?: string;
   patient_id?: string;
+  prescription?: string;
 }
 
 // let typescript know there is a statics method in userSchema
@@ -57,6 +58,9 @@ const bookingSchema = new Schema({
   status: {
     type: String,
     default: 'upcoming',
+  },
+  prescription: {
+    type: String,
   },
 });
 

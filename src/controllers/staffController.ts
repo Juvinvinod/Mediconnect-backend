@@ -6,10 +6,11 @@ import { login } from '../utilities/loginFunction';
 import { BadRequestError } from '../common/errors/badRequestError';
 import { StaffService } from '../services/staffService';
 import { IStaff } from '../common/types/staff';
+import { IStaffController } from './interfaces/staffController.interface';
 
 const staffService = new StaffService(); // create an instance of userService
 
-export class StaffController {
+export class StaffController implements IStaffController {
   //check if a user already exists else create new user
   signup = async (
     req: Request,
@@ -107,7 +108,11 @@ export class StaffController {
   };
 
   //block staff
-  blockStaff = async (req: Request, res: Response, next: NextFunction) => {
+  blockStaff = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -123,7 +128,11 @@ export class StaffController {
   };
 
   //unblock staff
-  unblockStaff = async (req: Request, res: Response, next: NextFunction) => {
+  unblockStaff = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -139,7 +148,11 @@ export class StaffController {
   };
 
   //update staff password
-  updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+  updatePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = (req.body as { _id?: string })?._id;
       const oldPass = (req.body as { password?: string }).password;

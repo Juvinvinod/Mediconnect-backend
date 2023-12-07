@@ -8,6 +8,7 @@ import { NotFoundError } from '../common/errors/notFoundError';
 import { login } from '../utilities/loginFunction';
 import { BookingService } from '../services/bookingService';
 import { IDept } from '../common/types/department';
+import { IAdminController } from './interfaces/adminController.interface';
 // import cloudinary from '../config/cloudinary';
 // import { UploadApiResponse } from 'cloudinary';
 
@@ -15,7 +16,7 @@ const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
 const bookingService = new BookingService(); // create an instance of bookingService
 
-export class AdminController {
+export class AdminController implements IAdminController {
   // function to check whether user is an admin,if so then provide them with token
   login = async (
     req: Request,
@@ -88,12 +89,16 @@ export class AdminController {
   };
 
   //find the user from database
-  getUser = async (req: Request, res: Response, next: NextFunction) => {
+  getUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     const id = req.params.id;
     const document = await adminService.getUser(id);
     try {
       if (document) {
-        return res.status(200).send(document);
+        res.status(200).send(document);
       } else {
         throw new NotFoundError('Document not found');
       }
@@ -105,7 +110,11 @@ export class AdminController {
   };
 
   // function to block user
-  blockUser = async (req: Request, res: Response, next: NextFunction) => {
+  blockUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -121,7 +130,11 @@ export class AdminController {
   };
 
   // function to unblock user
-  unblockUser = async (req: Request, res: Response, next: NextFunction) => {
+  unblockUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { id } = req.body as { id: string };
       if (!id) {
@@ -137,7 +150,11 @@ export class AdminController {
   };
 
   //function to create department
-  createDept = async (req: Request, res: Response, next: NextFunction) => {
+  createDept = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       // const { image } = req.body as { image: string };
 
@@ -158,7 +175,11 @@ export class AdminController {
   };
 
   //function to get all departments
-  getDept = async (req: Request, res: Response, next: NextFunction) => {
+  getDept = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const documents = await adminService.getDept();
       if (documents) {
@@ -174,7 +195,11 @@ export class AdminController {
   };
 
   //update department name
-  updateDept = async (req: Request, res: Response, next: NextFunction) => {
+  updateDept = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const id = req.params.id;
       const dept = req.body as IDept;
@@ -192,7 +217,11 @@ export class AdminController {
   };
 
   //get count of documents
-  getCount = async (req: Request, res: Response, next: NextFunction) => {
+  getCount = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const model = req.params.model;
       if (!model) {
@@ -208,7 +237,11 @@ export class AdminController {
     }
   };
 
-  patientsPerDept = async (req: Request, res: Response, next: NextFunction) => {
+  patientsPerDept = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const documents = await bookingService.getSlotsPerDept();
       if (documents) {

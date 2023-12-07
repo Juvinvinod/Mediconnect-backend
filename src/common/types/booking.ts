@@ -10,4 +10,5 @@ export interface IBooking {
   fees: string;
   status?: string;
   patient_id?: string;
+  prescription?: string;
 }
