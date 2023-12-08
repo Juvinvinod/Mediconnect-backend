@@ -3,6 +3,10 @@ import { IDept } from '../common/types/department';
 
 //interface for doctor model
 export interface DepartmentDoc extends Document {
+  image: {
+    public_id: string;
+    url: string;
+  };
   dept_name: string;
 }
 
@@ -13,6 +17,10 @@ interface DepartmentModel extends Model<DepartmentDoc> {
 
 //doctor model
 const deptSchema = new Schema({
+  image: {
+    type: Object,
+    required: true,
+  },
   dept_name: {
     type: String,
     required: true,

@@ -9,8 +9,8 @@ import { login } from '../utilities/loginFunction';
 import { BookingService } from '../services/bookingService';
 import { IDept } from '../common/types/department';
 import { IAdminController } from './interfaces/adminController.interface';
-// import cloudinary from '../config/cloudinary';
-// import { UploadApiResponse } from 'cloudinary';
+import cloudinary from '../config/cloudinary';
+import { UploadApiResponse } from 'cloudinary';
 
 const adminService = new AdminService(); // create an instance of adminService
 const userService = new UserService(); // create an instance of userService
@@ -156,16 +156,31 @@ export class AdminController implements IAdminController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      // const { image } = req.body as { image: string };
+      console.log(req.file?.path);
+      if (!req.file?.path) {
+        throw new BadRequestError('No file uploaded');
+      }
 
-      // const data: UploadApiResponse = await cloudinary.uploader.upload(image, {
-      //   folder: 'deptImage',
-      // });
+      const data: UploadApiResponse = await cloudinary.uploader.upload(
+        req.file.path,
+        {
+          folder: 'deptImage',
+        }
+      );
+
+      const image = {
+        public_id: data.public_id,
+        url: data.url,
+      };
       const { dept_name } = req.body as { dept_name: string };
       if (!dept_name) {
         throw new BadRequestError('Invalid request');
       }
-      await adminService.createDept({ dept_name });
+      const buildData = {
+        dept_name: dept_name,
+        image: image,
+      };
+      await adminService.createDept(buildData);
       res.status(200).json({ success: 'Department created' });
     } catch (error) {
       if (error instanceof Error) {
