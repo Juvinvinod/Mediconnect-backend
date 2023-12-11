@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start":"rimraf dist && tsc && node dist/index.js"
   },
   "author": "",
   "license": "ISC",
