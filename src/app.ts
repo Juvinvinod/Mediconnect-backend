@@ -11,7 +11,8 @@ import chatRouter from './routes/chatRoutes';
 import { errorHandler } from './middlewares/globalErrorHandler';
 
 const app = express();
-console.log('hi');
+app.use(cors());
+app.options('*', cors());
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -62,8 +63,7 @@ io.on('connection', (socket) => {
 // middlewares
 // app.use(cors(options));
 // app.options('*', cors());
-app.use(cors());
-app.options('*', cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
