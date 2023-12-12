@@ -21,7 +21,7 @@ router.get('/profile', verifyToken, userController.getUser); // get staff profil
 router.put(
   '/editUsers/:id',
   verifyToken,
-  roleChecker('admin'),
+  roleChecker('user'),
   adminController.updateUser
 ); // update user in the database
 router.put(
