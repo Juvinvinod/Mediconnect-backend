@@ -6,16 +6,24 @@ import { verifyToken } from '../middlewares/tokenChecker';
 import { AdminController } from '../controllers/adminController';
 import { DoctorController } from '../controllers/doctorController';
 import { BookingController } from '../controllers/bookingController';
+import { RoleChecker } from '../middlewares/roleChecker';
 
 const userController = new UserController();
 const adminController = new AdminController();
 const doctorController = new DoctorController();
 const bookingController = new BookingController();
+const roleChecker = new RoleChecker();
+
 const router = Router();
 
 router.post('/signUp', signupValidator, validateRequest, userController.signup); //create a new user
 router.post('/login', userController.login); //validate credentials and provide token
-router.get('/profile', verifyToken, userController.getUser); // get staff profile
+router.get(
+  '/profile',
+  verifyToken,
+  roleChecker.userChecker,
+  userController.getUser
+); // get staff profile
 router.put('/editUsers/:id', verifyToken, adminController.updateUser); // update user in the database
 router.put('/password', verifyToken, userController.updatePassword); // update user in the database
 router.get('/doctorProfile/:id', doctorController.getDoctor); // get doctor profile
