@@ -57,6 +57,15 @@ const options: cors.CorsOptions = {
   ],
 };
 
+app.use((req, res, next) => {
+  res.header(
+    'Access-Control-Allow-Origin',
+    'https://mediconnect-frontend.vercel.app'
+  );
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 // middlewares
 app.use(cors(options));
 app.options('*', cors());
