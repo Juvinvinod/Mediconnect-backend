@@ -44,9 +44,7 @@ const allowedOrigins = [
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
+  allowedHeaders: '*',
 };
 
 // middlewares
