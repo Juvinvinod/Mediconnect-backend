@@ -18,6 +18,8 @@ const io = new Server(httpServer, {
       'http://localhost:3000',
       'http://localhost:4200',
       'https://mediconnect-frontend.vercel.app',
+      'http://mediconnect-frontend.vercel.app',
+      'mediconnect-frontend.vercel.app',
     ],
   },
 });
@@ -35,26 +37,17 @@ io.on('connection', (socket) => {
     });
   });
 });
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-//   socket.on('chat', function (data) {
-//     io.sockets.emit('chat', data);
-//   });
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
 
-// Add a list of allowed origins.
-// If you have more origins you would like to add, you can add them to the array below.
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:4200',
   'https://mediconnect-frontend.vercel.app',
+  'http://mediconnect-frontend.vercel.app',
+  'mediconnect-frontend.vercel.app',
 ];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
 };
 
 // middlewares
