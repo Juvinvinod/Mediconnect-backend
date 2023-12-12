@@ -15,9 +15,9 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: [
+      'https://mediconnect-frontend.vercel.app',
       'http://localhost:3000',
       'http://localhost:4200',
-      'https://mediconnect-frontend.vercel.app',
     ],
   },
 });
@@ -36,25 +36,17 @@ io.on('connection', (socket) => {
   });
 });
 
-// const allowedOrigins = [
-//   'http://localhost:3000',
-//   'http://localhost:4200',
-//   'https://mediconnect-frontend.vercel.app',
-// ];
-// const options: cors.CorsOptions = {
-//   origin: allowedOrigins,
-// };
+const allowedOrigins = [
+  'https://mediconnect-frontend.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:4200',
+];
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
 
 // middlewares
-app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',
-      'https://mediconnect-frontend.vercel.app',
-    ],
-    allowedHeaders: '*',
-  })
-);
+app.use(cors(options));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
