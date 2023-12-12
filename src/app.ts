@@ -18,6 +18,7 @@ const io = new Server(httpServer, {
       'http://localhost:3000',
       'http://localhost:4200',
       'https://mediconnect-frontend.vercel.app',
+      'https://mediconnect.juvin.in',
     ],
   },
 });
@@ -40,6 +41,7 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:4200',
   'https://mediconnect-frontend.vercel.app',
+  'https://mediconnect.juvin.in',
 ];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
