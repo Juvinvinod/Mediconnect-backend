@@ -12,7 +12,7 @@ export class RoleChecker {
       if (id) {
         const document = await adminService.getUser(id);
         if (document) {
-          if (document[0].is_blocked) {
+          if (document[0].is_blocked === true) {
             throw new ForbiddenError('Your account has been blocked');
           } else {
             next();
