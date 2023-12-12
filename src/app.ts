@@ -39,29 +39,30 @@ io.on('connection', (socket) => {
   });
 });
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:4200',
-  'https://mediconnect-frontend.vercel.app',
-  'https://mediconnect.juvin.in',
-];
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-  // allowedHeaders: ['Authorization', 'Content-Type'],
-  allowedHeaders: [
-    'content-Type',
-    'Access-Control-Allow-Headers',
-    'X-Requested-With',
-    'authorization',
-  ],
-  preflightContinue: true,
-  credentials: true,
-  methods: '*',
-  optionsSuccessStatus: 204,
-};
+// const allowedOrigins = [
+//   'http://localhost:3000',
+//   'http://localhost:4200',
+//   'https://mediconnect-frontend.vercel.app',
+//   'https://mediconnect.juvin.in',
+// ];
+// const options: cors.CorsOptions = {
+//   origin: allowedOrigins,
+//   allowedHeaders: [
+//     'content-Type',
+//     'Access-Control-Allow-Headers',
+//     'X-Requested-With',
+//     'authorization',
+//   ],
+//   preflightContinue: true,
+//   credentials: true,
+//   methods: '*',
+//   optionsSuccessStatus: 204,
+// };
 
 // middlewares
-app.use(cors(options));
+// app.use(cors(options));
+// app.options('*', cors());
+app.use(cors());
 app.options('*', cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
