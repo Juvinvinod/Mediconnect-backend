@@ -49,10 +49,10 @@ const options: cors.CorsOptions = {
   origin: allowedOrigins,
   // allowedHeaders: ['Authorization', 'Content-Type'],
   allowedHeaders: [
-    'Content-Type',
+    'content-Type',
     'Access-Control-Allow-Headers',
     'X-Requested-With',
-    'Authorization',
+    'authorization',
   ],
   preflightContinue: true,
   credentials: true,
@@ -61,8 +61,8 @@ const options: cors.CorsOptions = {
 };
 
 // middlewares
-app.options('*', cors());
 app.use(cors(options));
+app.options('*', cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
