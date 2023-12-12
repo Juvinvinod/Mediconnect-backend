@@ -53,9 +53,9 @@ const options: cors.CorsOptions = {
 };
 
 // middlewares
-app.use(cors(options));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors(options));
 app.use('/admin', adminRouter);
 app.use('/doctor', doctorRouter);
 app.use('/staff', staffRouter);
