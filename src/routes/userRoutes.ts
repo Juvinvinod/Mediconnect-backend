@@ -18,21 +18,36 @@ const router = Router();
 
 router.post('/signUp', signupValidator, validateRequest, userController.signup); //create a new user
 router.post('/login', userController.login); //validate credentials and provide token
-router.get(
-  '/profile',
+router.get('/profile', verifyToken, userController.getUser); // get staff profile
+router.put(
+  '/editUsers/:id',
   verifyToken,
   roleChecker.userChecker,
-  userController.getUser
-); // get staff profile
-router.put('/editUsers/:id', verifyToken, adminController.updateUser); // update user in the database
-router.put('/password', verifyToken, userController.updatePassword); // update user in the database
+  adminController.updateUser
+); // update user in the database
+router.put(
+  '/password',
+  verifyToken,
+  roleChecker.userChecker,
+  userController.updatePassword
+); // update user in the database
 router.get('/doctorProfile/:id', doctorController.getDoctor); // get doctor profile
 
 //booking routes
 router.get('/getSlots/:id', bookingController.getUser); // get all slots belonging to a doctor
-router.put('/bookSlot', verifyToken, bookingController.bookSlot); // book a slot
+router.put(
+  '/bookSlot',
+  verifyToken,
+  roleChecker.userChecker,
+  bookingController.bookSlot
+); // book a slot
 router.get('/getSlots', verifyToken, bookingController.getBookingDocs); //get all booking docs
 router.get('/getSlot/:id', verifyToken, bookingController.getSlot); //get a slot detail
-router.put('/cancelSlot', verifyToken, bookingController.cancelSlot); //cancel a booked slot
+router.put(
+  '/cancelSlot',
+  verifyToken,
+  roleChecker.userChecker,
+  bookingController.cancelSlot
+); //cancel a booked slot
 
 export default router;
