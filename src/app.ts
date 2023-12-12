@@ -45,6 +45,7 @@ const options: cors.CorsOptions = {
   origin: allowedOrigins,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
+  optionsSuccessStatus: 200,
 };
 
 // middlewares
