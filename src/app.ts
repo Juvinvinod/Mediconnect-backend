@@ -46,7 +46,12 @@ const allowedOrigins = [
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
   // allowedHeaders: ['Authorization', 'Content-Type'],
-  allowedHeaders: '*',
+  allowedHeaders: [
+    'Content-Type',
+    'Access-Control-Allow-Headers',
+    'X-Requested-With',
+    'Authorization',
+  ],
   preflightContinue: true,
   credentials: true,
   methods: '*',
