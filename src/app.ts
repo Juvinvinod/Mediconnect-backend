@@ -18,8 +18,6 @@ const io = new Server(httpServer, {
       'http://localhost:3000',
       'http://localhost:4200',
       'https://mediconnect-frontend.vercel.app',
-      'http://mediconnect-frontend.vercel.app',
-      'mediconnect-frontend.vercel.app',
     ],
   },
 });
@@ -42,12 +40,12 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:4200',
   'https://mediconnect-frontend.vercel.app',
-  'http://mediconnect-frontend.vercel.app',
-  'mediconnect-frontend.vercel.app',
 ];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
-  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 // middlewares
