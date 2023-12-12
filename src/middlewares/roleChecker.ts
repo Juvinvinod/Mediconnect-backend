@@ -5,28 +5,29 @@ import { ForbiddenError } from '../common/errors/forbiddenError';
 
 const adminService = new AdminService(); // create an instance of adminService
 
-export const userChecker = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const id = (req.body as { _id?: string })?._id;
-    if (id) {
-      const document = await adminService.getUser(id);
-      if (document && document[0].is_blocked) {
-        throw new ForbiddenError('Your account has been blocked');
-      } else if (document && document[0].is_blocked !== true) {
-        next();
+export const roleChecker =
+  (role: string) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      if (id) {
+        const document = await adminService.getUser(id);
+        if (document && document[0].is_blocked) {
+          throw new ForbiddenError('Your account has been blocked');
+        } else if (
+          document &&
+          document[0].is_blocked !== true &&
+          document[0].role === role
+        ) {
+          next();
+        } else {
+          throw new ForbiddenError('You do not have access');
+        }
       } else {
-        throw new ForbiddenError('You do not have access');
+        throw new NotFoundError('id not found');
       }
-    } else {
-      throw new NotFoundError('id not found');
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
     }
-  } catch (error) {
-    if (error instanceof Error) {
-      return next(error);
-    }
-  }
-};
+  };

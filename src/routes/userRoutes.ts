@@ -6,7 +6,7 @@ import { verifyToken } from '../middlewares/tokenChecker';
 import { AdminController } from '../controllers/adminController';
 import { DoctorController } from '../controllers/doctorController';
 import { BookingController } from '../controllers/bookingController';
-import { userChecker } from '../middlewares/roleChecker';
+import { roleChecker } from '../middlewares/roleChecker';
 
 const userController = new UserController();
 const adminController = new AdminController();
@@ -21,26 +21,31 @@ router.get('/profile', verifyToken, userController.getUser); // get staff profil
 router.put(
   '/editUsers/:id',
   verifyToken,
-  userChecker,
+  roleChecker('admin'),
   adminController.updateUser
 ); // update user in the database
 router.put(
   '/password',
   verifyToken,
-  userChecker,
+  roleChecker('user'),
   userController.updatePassword
 ); // update user in the database
 router.get('/doctorProfile/:id', doctorController.getDoctor); // get doctor profile
 
 //booking routes
 router.get('/getSlots/:id', bookingController.getUser); // get all slots belonging to a doctor
-router.put('/bookSlot', verifyToken, userChecker, bookingController.bookSlot); // book a slot
+router.put(
+  '/bookSlot',
+  verifyToken,
+  roleChecker('user'),
+  bookingController.bookSlot
+); // book a slot
 router.get('/getSlots', verifyToken, bookingController.getBookingDocs); //get all booking docs
 router.get('/getSlot/:id', verifyToken, bookingController.getSlot); //get a slot detail
 router.put(
   '/cancelSlot',
   verifyToken,
-  userChecker,
+  roleChecker('user'),
   bookingController.cancelSlot
 ); //cancel a booked slot
 
