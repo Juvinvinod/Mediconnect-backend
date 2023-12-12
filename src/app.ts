@@ -44,13 +44,13 @@ const allowedOrigins = [
   'https://mediconnect.juvin.in',
 ];
 const options: cors.CorsOptions = {
-  origin: allowedOrigins,
+  origin: 'https://mediconnect-frontend.vercel.app',
   // allowedHeaders: ['Authorization', 'Content-Type'],
   allowedHeaders: '*',
-  preflightContinue: true,
+  preflightContinue: false,
   credentials: true,
   methods: '*',
-  optionsSuccessStatus: 200,
+  optionsSuccessStatus: 204,
 };
 
 // middlewares
