@@ -21,6 +21,7 @@ const io = new Server(httpServer, {
       'https://mediconnect-frontend.vercel.app',
       'https://mediconnect.juvin.in',
     ],
+    allowedHeaders: ['Authorization', 'Content-Type'],
   },
 });
 io.on('connection', (socket) => {
