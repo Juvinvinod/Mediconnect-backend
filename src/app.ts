@@ -53,6 +53,7 @@ const options: cors.CorsOptions = {
     'Access-Control-Allow-Headers',
     'X-Requested-With',
     'authorization',
+    'access-control-allow-origin',
   ],
 };
 
