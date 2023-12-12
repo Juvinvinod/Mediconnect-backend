@@ -48,14 +48,12 @@ const allowedOrigins = [
   'http://mediconnect-frontend.vercel.app',
 ];
 const options: cors.CorsOptions = {
-  origin: '*',
-  // allowedHeaders: ['Authorization', 'Content-Type'],
+  origin: allowedOrigins,
   allowedHeaders: '*',
 };
 
 // middlewares
 app.use(cors(options));
-app.options('*', cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/admin', adminRouter);
