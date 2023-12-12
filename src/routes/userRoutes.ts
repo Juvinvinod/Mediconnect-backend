@@ -6,13 +6,12 @@ import { verifyToken } from '../middlewares/tokenChecker';
 import { AdminController } from '../controllers/adminController';
 import { DoctorController } from '../controllers/doctorController';
 import { BookingController } from '../controllers/bookingController';
-import { RoleChecker } from '../middlewares/roleChecker';
+import { userChecker } from '../middlewares/roleChecker';
 
 const userController = new UserController();
 const adminController = new AdminController();
 const doctorController = new DoctorController();
 const bookingController = new BookingController();
-const roleChecker = new RoleChecker();
 
 const router = Router();
 
@@ -22,31 +21,26 @@ router.get('/profile', verifyToken, userController.getUser); // get staff profil
 router.put(
   '/editUsers/:id',
   verifyToken,
-  roleChecker.userChecker,
+  userChecker,
   adminController.updateUser
 ); // update user in the database
 router.put(
   '/password',
   verifyToken,
-  roleChecker.userChecker,
+  userChecker,
   userController.updatePassword
 ); // update user in the database
 router.get('/doctorProfile/:id', doctorController.getDoctor); // get doctor profile
 
 //booking routes
 router.get('/getSlots/:id', bookingController.getUser); // get all slots belonging to a doctor
-router.put(
-  '/bookSlot',
-  verifyToken,
-  roleChecker.userChecker,
-  bookingController.bookSlot
-); // book a slot
+router.put('/bookSlot', verifyToken, userChecker, bookingController.bookSlot); // book a slot
 router.get('/getSlots', verifyToken, bookingController.getBookingDocs); //get all booking docs
 router.get('/getSlot/:id', verifyToken, bookingController.getSlot); //get a slot detail
 router.put(
   '/cancelSlot',
   verifyToken,
-  roleChecker.userChecker,
+  userChecker,
   bookingController.cancelSlot
 ); //cancel a booked slot
 
