@@ -11,6 +11,8 @@ import chatRouter from './routes/chatRoutes';
 import { errorHandler } from './middlewares/globalErrorHandler';
 
 const app = express();
+console.log('hi');
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
