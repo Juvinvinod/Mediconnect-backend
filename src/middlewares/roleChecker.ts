@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AdminService } from '../services/adminService';
 import { NotFoundError } from '../common/errors/notFoundError';
 import { ForbiddenError } from '../common/errors/forbiddenError';
+import { BadRequestError } from '../common/errors/badRequestError';
 
 const adminService = new AdminService(); // create an instance of adminService
 
@@ -15,12 +16,7 @@ export const userChecker = async (
     if (id) {
       const document = await adminService.getUser(id);
       if (document) {
-        //   if (document[0].is_blocked === true) {
-        //     throw new ForbiddenError('Your account has been blocked');
-        //   } else {
-        //     next();
-        //   }
-        throw new ForbiddenError('You do not have access to this page');
+        throw new BadRequestError('hi');
       } else {
         throw new ForbiddenError('You do not have access to this page');
       }
