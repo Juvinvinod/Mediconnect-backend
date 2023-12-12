@@ -45,9 +45,12 @@ const allowedOrigins = [
 ];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
-  allowedHeaders: ['Authorization', 'Content-Type'],
+  // allowedHeaders: ['Authorization', 'Content-Type'],
+  allowedHeaders: '*',
   preflightContinue: true,
   credentials: true,
+  methods: '*',
+  optionsSuccessStatus: 200,
 };
 
 // middlewares
