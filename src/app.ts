@@ -44,12 +44,12 @@ const allowedOrigins = [
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
 
 // middlewares
-app.options('/', cors(options));
 app.use(cors(options));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
