@@ -7,20 +7,26 @@ const adminService = new AdminService(); // create an instance of adminService
 
 export class RoleChecker {
   userChecker = async (req: Request, res: Response, next: NextFunction) => {
-    const id = (req.body as { _id?: string })?._id;
-    if (id) {
-      const document = await adminService.getUser(id);
-      if (document) {
-        if (document[0].is_blocked) {
-          throw new ForbiddenError('Your account has been blocked');
+    try {
+      const id = (req.body as { _id?: string })?._id;
+      if (id) {
+        const document = await adminService.getUser(id);
+        if (document) {
+          if (document[0].is_blocked) {
+            throw new ForbiddenError('Your account has been blocked');
+          } else {
+            next();
+          }
         } else {
-          next();
+          throw new ForbiddenError('You do not have access to this page');
         }
       } else {
-        throw new ForbiddenError('You do not have access to this page');
+        throw new NotFoundError('id not found');
       }
-    } else {
-      throw new NotFoundError('id not found');
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
     }
   };
 }
