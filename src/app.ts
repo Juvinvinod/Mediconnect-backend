@@ -14,7 +14,11 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:4200'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:4200',
+      'https://mediconnect-frontend.vercel.app',
+    ],
   },
 });
 io.on('connection', (socket) => {
@@ -43,7 +47,11 @@ io.on('connection', (socket) => {
 
 // Add a list of allowed origins.
 // If you have more origins you would like to add, you can add them to the array below.
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:4200'];
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4200',
+  'https://mediconnect-frontend.vercel.app',
+];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
