@@ -47,6 +47,7 @@ const options: cors.CorsOptions = {
   origin: allowedOrigins,
   allowedHeaders: ['Authorization', 'Content-Type'],
   preflightContinue: true,
+  credentials: true,
 };
 
 // middlewares
