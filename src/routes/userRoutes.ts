@@ -17,7 +17,7 @@ const router = Router();
 
 router.post('/signUp', signupValidator, validateRequest, userController.signup); //create a new user
 router.post('/login', userController.login); //validate credentials and provide token
-router.get('/profile', verifyToken, userController.getUser); // get staff profile
+router.get('/profile', verifyToken, userChecker, userController.getUser); // get staff profile
 router.put(
   '/editUsers/:id',
   verifyToken,
