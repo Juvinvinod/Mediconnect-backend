@@ -45,7 +45,7 @@ const allowedOrigins = [
 ];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
-  allowedHeaders: ['Authorization'],
+  allowedHeaders: ['Authorization', 'Content-Type'],
   preflightContinue: true,
 };
 
