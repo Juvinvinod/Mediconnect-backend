@@ -14,17 +14,12 @@ export const userChecker = async (
     const id = (req.body as { _id?: string })?._id;
     if (id) {
       const document = await adminService.getUser(id);
-      if (document) {
-        //   if (document[0].is_blocked === true) {
-        //     throw new ForbiddenError('Your account has been blocked');
-        //   } else {
-        //     next();
-        //   }
-        console.log(document);
-
-        throw new ForbiddenError('You do not have access to this page');
+      if (document && document[0].is_blocked) {
+        throw new ForbiddenError('Your account has been blocked');
+      } else if (document && document[0].is_blocked !== true) {
+        next();
       } else {
-        throw new ForbiddenError('You do not have access to this page');
+        throw new ForbiddenError('You do not have access');
       }
     } else {
       throw new NotFoundError('id not found');
