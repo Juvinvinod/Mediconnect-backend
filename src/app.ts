@@ -42,7 +42,7 @@ const allowedOrigins = [
   'https://mediconnect-frontend.vercel.app',
 ];
 const options: cors.CorsOptions = {
-  origin: allowedOrigins,
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*',
   optionsSuccessStatus: 200,
