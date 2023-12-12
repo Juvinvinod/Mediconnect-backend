@@ -11,7 +11,6 @@ import chatRouter from './routes/chatRoutes';
 import { errorHandler } from './middlewares/globalErrorHandler';
 
 const app = express();
-
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -19,9 +18,7 @@ const io = new Server(httpServer, {
       'http://localhost:3000',
       'http://localhost:4200',
       'https://mediconnect-frontend.vercel.app',
-      'https://mediconnect.juvin.in',
     ],
-    allowedHeaders: ['Authorization', 'Content-Type'],
   },
 });
 io.on('connection', (socket) => {
@@ -39,24 +36,27 @@ io.on('connection', (socket) => {
   });
 });
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:4200',
-  'https://mediconnect-frontend.vercel.app',
-  'https://mediconnect.juvin.in',
-  'https://mediconnect.juvin.in/',
-  'mediconnect-frontend.vercel.app',
-  'http://mediconnect-frontend.vercel.app',
-];
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-  allowedHeaders: '*',
-};
+// const allowedOrigins = [
+//   'http://localhost:3000',
+//   'http://localhost:4200',
+//   'https://mediconnect-frontend.vercel.app',
+// ];
+// const options: cors.CorsOptions = {
+//   origin: allowedOrigins,
+// };
 
 // middlewares
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'https://mediconnect-frontend.vercel.app',
+    ],
+    allowedHeaders: '*',
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors(options));
 app.use('/admin', adminRouter);
 app.use('/doctor', doctorRouter);
 app.use('/staff', staffRouter);
