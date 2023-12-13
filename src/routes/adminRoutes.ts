@@ -35,6 +35,7 @@ router.patch(
 router.post(
   '/addDept',
   upload.single('file'),
+  verifyToken,
   roleChecker('admin'),
   adminController.createDept
 ); //create a new department
