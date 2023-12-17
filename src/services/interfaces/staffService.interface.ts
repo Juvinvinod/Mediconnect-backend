@@ -9,4 +9,5 @@ export interface IStaffService {
   blockStaff(id: string): Promise<IStaff | null>;
   unblockStaff(id: string): Promise<IStaff | null>;
   updatePassword(id: string, newPass: string): Promise<IStaff | null>;
+  getStaffByEmail(email: string): Promise<IStaff[]>;
 }

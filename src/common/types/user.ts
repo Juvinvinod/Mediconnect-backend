@@ -9,4 +9,6 @@ export interface IUser {
   role: string;
   is_blocked?: boolean;
   is_verified?: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: string;
 }

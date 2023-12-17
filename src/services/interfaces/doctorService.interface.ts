@@ -11,4 +11,5 @@ export interface IDoctorService {
   unblockDoctor(id: string): Promise<IDoctor | null>;
   updatePassword(id: string, newPass: string): Promise<IDoctor | null>;
   createSlot(details: IBooking): Promise<IBooking>;
+  getDoctorByEmail(email: string): Promise<IDoctor[]>;
 }

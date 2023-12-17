@@ -41,6 +41,15 @@ export class StaffService implements IStaffService {
     }
   }
 
+  async getStaffByEmail(email: string): Promise<IStaff[]> {
+    const document = await this.staffRepository.getStaff(email);
+    if (!document) {
+      throw new NotFoundError('No staffs found');
+    } else {
+      return document;
+    }
+  }
+
   async getStaffs(): Promise<IStaff[]> {
     const documents = await this.staffRepository.getStaffs();
     if (!documents) {

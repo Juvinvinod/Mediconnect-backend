@@ -17,6 +17,11 @@ export class DoctorRepository implements IDoctorRepository {
     return await Doctor.find({ _id: id });
   }
 
+  //function to get  doctor documents
+  async getDoctorByEmail(email: string): Promise<IDoctor[] | null> {
+    return await Doctor.find({ email: email });
+  }
+
   //function to get all doctor documents
   async getDoctors(): Promise<IDoctor[] | null> {
     return await Doctor.find({ role: 'doctor' });

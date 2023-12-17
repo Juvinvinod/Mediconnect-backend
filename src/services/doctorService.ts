@@ -44,6 +44,16 @@ export class DoctorService implements IDoctorService {
     }
   }
 
+  //get doctor
+  async getDoctorByEmail(email: string): Promise<IDoctor[]> {
+    const documents = await this.doctorRepository.getDoctorByEmail(email);
+    if (!documents) {
+      throw new NotFoundError('No doctors found');
+    } else {
+      return documents;
+    }
+  }
+
   //get doctors
   async getDoctors(): Promise<IDoctor[]> {
     const documents = await this.doctorRepository.getDoctors();

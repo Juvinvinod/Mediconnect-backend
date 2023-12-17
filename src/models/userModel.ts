@@ -12,6 +12,8 @@ export interface UserDoc extends Document {
   is_blocked?: boolean;
   is_admin?: boolean;
   is_verified?: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: string;
 }
 
 // let typescript know there is a statics method in userSchema
@@ -52,6 +54,12 @@ const userSchema = new Schema({
   role: {
     type: String,
     default: 'user',
+  },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
   },
 });
 

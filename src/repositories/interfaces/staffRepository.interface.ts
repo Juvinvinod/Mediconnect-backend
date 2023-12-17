@@ -9,4 +9,5 @@ export interface IStaffRepository {
   blockStaff(id: string): Promise<IStaff>;
   unblockStaff(id: string): Promise<IStaff>;
   passwordChange(id: string, newPass: string): Promise<IStaff>;
+  getStaffByEmail(email: string): Promise<IStaff[] | null>;
 }

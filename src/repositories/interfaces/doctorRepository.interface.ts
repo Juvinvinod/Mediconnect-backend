@@ -12,4 +12,5 @@ export interface IDoctorRepository {
   unblockDoctor(id: string): Promise<IDoctor>;
   passwordChange(id: string, newPass: string): Promise<IDoctor>;
   createSlot(data: IBooking): Promise<IBooking>;
+  getDoctorByEmail(email: string): Promise<IDoctor[] | null>;
 }

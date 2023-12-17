@@ -20,6 +20,11 @@ export class StaffRepository implements IStaffRepository {
     return await Staff.find({ _id: id });
   }
 
+  //function to get  staff documents
+  async getStaffByEmail(email: string): Promise<IStaff[] | null> {
+    return await Staff.find({ email: email });
+  }
+
   //function to get all staff documents
   async getStaffs(): Promise<IStaff[] | null> {
     return await Staff.find({ role: 'staff' });

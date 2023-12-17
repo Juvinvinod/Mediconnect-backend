@@ -10,6 +10,8 @@ declare global {
       CLOUDINARY_API_SECRET: string;
       RAZORPAY_KEY: string;
       RAZORPAY_SECRET: string;
+      NM_EMAIL: string;
+      NM_PASS: string;
       // add more environment variables and their types here
     }
   }

@@ -32,6 +32,11 @@ export class UserRepository implements IUserRepository {
     return await User.find({ _id: id });
   }
 
+  // function to get a single user from database
+  async getUserByEmail(email: string): Promise<IUser[] | null> {
+    return await User.find({ email: email });
+  }
+
   // function to update user in database
   async updateUser(id: string, userDetails: IUser): Promise<IUser | null> {
     return await User.findByIdAndUpdate({ _id: id }, userDetails);
@@ -50,5 +55,39 @@ export class UserRepository implements IUserRepository {
   //function to get all slots
   async getSlots(): Promise<IBooking[] | null> {
     return await Booking.find({});
+  }
+
+  //store resetPassword token in database
+  async storeToken(
+    email: string,
+    token: string,
+    time: Date
+  ): Promise<IUser | null> {
+    return await User.findOneAndUpdate(
+      { email: email },
+      { resetPasswordToken: token, resetPasswordExpires: time }
+    );
+  }
+
+  //check send token
+  async checkToken(token: string, time: Date): Promise<IUser | null> {
+    return await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: time },
+    });
+  }
+
+  async newPassword(token: string, password: string): Promise<void> {
+    await User.findOneAndUpdate(
+      { resetPasswordToken: token },
+      { password: password }
+    );
+  }
+
+  async verifyUser(token: string): Promise<void> {
+    await User.findOneAndUpdate(
+      { resetPasswordToken: token },
+      { is_verified: true }
+    );
   }
 }

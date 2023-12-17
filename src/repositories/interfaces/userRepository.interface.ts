@@ -10,4 +10,9 @@ export interface IUserRepository {
   updateUser(id: string, userDetails: IUser): Promise<IUser | null>;
   passwordChange(id: string, newPass: string): Promise<IUser>;
   getSlots(): Promise<IBooking[] | null>;
+  getUserByEmail(email: string): Promise<IUser[] | null>;
+  storeToken(email: string, token: string, time: Date): Promise<IUser | null>;
+  checkToken(token: string, time: Date): Promise<IUser | null>;
+  newPassword(token: string, password: string): Promise<void>;
+  verifyUser(token: string): Promise<void>;
 }

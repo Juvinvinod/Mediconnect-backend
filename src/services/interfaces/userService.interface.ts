@@ -9,4 +9,9 @@ export interface IUserService {
   getStaffs(): Promise<IUser[]>;
   updatePassword(id: string, newPass: string): Promise<IUser | null>;
   getSLots(): Promise<IBooking[] | null>;
+  resetPassMail(email: string): Promise<void>;
+  verificationMail(email: string): Promise<void>;
+  checkToken(token: string, time: Date): Promise<IUser | null>;
+  resetPass(token: string, password: string): Promise<void>;
+  verifyUser(token: string): Promise<void>;
 }

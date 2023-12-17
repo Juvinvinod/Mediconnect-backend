@@ -48,5 +48,9 @@ router.put(
   roleChecker('user'),
   bookingController.cancelSlot
 ); //cancel a booked slot
+router.post('/forgetPassword', userController.emailChecker); //check if an email exists
+router.get('/reset/:token', userController.resetTokenChecker); // check if the send token is valid
+router.post('/forgetPassword/:token', userController.resetPassword); //add the new password to database
+// router.post('/email/:token',userController.verifyAccount);
 
 export default router;
