@@ -23,4 +23,5 @@ export interface IBookingService {
   getSlotsPerDept(): Promise<IBooking[]>;
   getSlot(id: string): Promise<IBooking[]>;
   cancelSlot(id: string): Promise<null>;
+  bookedSlots(): Promise<IBooking[]>;
 }

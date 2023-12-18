@@ -193,4 +193,18 @@ export class BookingRepository implements IBookingRepository {
       { status: 'upcoming', patient_id: null, payment: null }
     );
   }
+
+  //get booked slots
+  async allBookedSlots(): Promise<IBooking[]> {
+    return await Booking.find({ status: 'booked' }).populate([
+      {
+        path: 'patient_id',
+        model: 'user',
+      },
+      {
+        path: 'doctor_id',
+        model: 'doctor',
+      },
+    ]);
+  }
 }

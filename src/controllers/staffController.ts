@@ -7,8 +7,10 @@ import { BadRequestError } from '../common/errors/badRequestError';
 import { StaffService } from '../services/staffService';
 import { IStaff } from '../common/types/staff';
 import { IStaffController } from './interfaces/staffController.interface';
+import { BookingService } from '../services/bookingService';
 
 const staffService = new StaffService(); // create an instance of userService
+const bookingService = new BookingService();
 
 export class StaffController implements IStaffController {
   //check if a user already exists else create new user
@@ -174,6 +176,26 @@ export class StaffController implements IStaffController {
         }
       } else {
         throw new BadRequestError('Invalid id');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return next(error);
+      }
+    }
+  };
+
+  //get all booked slots
+  allBookedSlots = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const documents = await bookingService.bookedSlots();
+      if (documents) {
+        res.status(200).send(documents);
+      } else {
+        throw new BadRequestError('Document not found');
       }
     } catch (error) {
       if (error instanceof Error) {

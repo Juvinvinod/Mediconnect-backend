@@ -42,5 +42,6 @@ router.put(
   roleChecker('staff'),
   staffController.updatePassword
 ); // update user in the database
+router.get('/bookings', verifyToken, staffController.allBookedSlots); //get all booked docs
 
 export default router;

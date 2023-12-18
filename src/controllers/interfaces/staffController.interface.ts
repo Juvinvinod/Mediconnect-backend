@@ -13,4 +13,9 @@ export interface IStaffController {
     res: Response,
     next: NextFunction
   ): Promise<void>;
+  allBookedSlots(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void>;
 }

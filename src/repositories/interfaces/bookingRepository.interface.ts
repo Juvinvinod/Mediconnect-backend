@@ -23,4 +23,5 @@ export interface IBookingRepository {
   patientsPerDept(): Promise<IBooking[]>;
   getSlot(_id: string): Promise<IBooking[]>;
   cancelSlot(id: string): Promise<null>;
+  allBookedSlots(): Promise<IBooking[]>;
 }

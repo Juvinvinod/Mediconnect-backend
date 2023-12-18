@@ -82,4 +82,9 @@ export class BookingService implements IBookingService {
   async cancelSlot(id: string): Promise<null> {
     return await this.bookingRepository.cancelSlot(id);
   }
+
+  //get all booked slots
+  async bookedSlots(): Promise<IBooking[]> {
+    return await this.bookingRepository.allBookedSlots();
+  }
 }
