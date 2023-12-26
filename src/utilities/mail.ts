@@ -38,7 +38,7 @@ export const sendOtpVerificationEmail = async (
           <p style="font-size:1.1em">Hi,</p>
           <p>Thank you for choosing Mediconnect. Use the following link to reset password.
            OTP is valid for 10 minutes</p>
-          <a href='http://localhost:4200/newpassword/${otp}'>Click here!!</a>
+          <a href='https://mediconnect-frontend.vercel.app/newpassword/${otp}'>Click here!!</a>
           <p style="font-size:0.9em;">Regards,<br/>Mediconnect</p>
           <hr style="border:none;border-top:1px solid #eee" />
         </div>
@@ -72,7 +72,7 @@ export const mailVerificationEmail = async (
           <p style="font-size:1.1em">Hi,</p>
           <p>Thank you for choosing Mediconnect. Use the following link to complete your Sign Up procedures.
            OTP is valid for 10 minutes</p>
-          <a href='http://localhost:4200/email/${otp}'>Click here!!</a>
+          <a href='https://mediconnect-frontend.vercel.app/email/${otp}'>Click here!!</a>
           <p style="font-size:0.9em;">Regards,<br/>Mediconnect</p>
           <hr style="border:none;border-top:1px solid #eee" />
         </div>

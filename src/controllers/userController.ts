@@ -24,7 +24,7 @@ export class UserController implements IUserController {
       const hashedPass = await bcrypt.hash(userDetails.password, 10);
       userDetails.password = hashedPass;
       await userService.signup(userDetails);
-      await userService.resetPassMail(userDetails.email);
+      await userService.verificationMail(userDetails.email);
       res.status(200).json({ message: 'User created' });
     } catch (error) {
       if (error instanceof Error) {
@@ -211,7 +211,7 @@ export class UserController implements IUserController {
       const document = await userService.checkToken(token, time);
       if (document) {
         await userService.verifyUser(token);
-        res.status(200).json({ success: 'Password changed successfully' });
+        res.status(200).json({ success: 'User successfully verified' });
       } else {
         throw new BadRequestError('Token expired/not found');
       }
